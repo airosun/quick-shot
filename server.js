@@ -32,7 +32,7 @@ function get(socket){const g=games.get(socket.data.code);return g&&g.players.fin
 function auth(s){const g=games.get(s.data.code);return g&&g.hostToken===s.data.hostToken&&g.hostSid===s.id?g:null;}
 function player(s){const g=games.get(s.data.code);return g?.players.find(p=>p.id===s.data.pid&&p.sid===s.id)?{g,p:g.players.find(p=>p.id===s.data.pid)}:null;}
 function error(s,msg){s.emit('errorMsg',msg)}
-const freshStats=()=>({spacesMoved:0,blankSpaces:0,extraMovement:0,chooseSpaces:0,chosenMovement:0,hints:0,swaps:0,piggyBacks:0,piggyBackDistance:0,ridesGiven:0,rideDistance:0,headStarts:0,solos:0,lockOuts:0,overshoots:0});
+const freshStats=()=>({questions:0,spacesMoved:0,blankSpaces:0,extraMovement:0,chooseSpaces:0,chosenMovement:0,hints:0,swaps:0,piggyBacks:0,piggyBackDistance:0,ridesGiven:0,rideDistance:0,headStarts:0,solos:0,lockOuts:0,overshoots:0});
 function stats(p){return p.stats||(p.stats=freshStats());}
 function standings(g){const sorted=[...g.players].sort((a,b)=>b.pos-a.pos);let previous=null,rank=0;return sorted.map((p,i)=>{if(p.pos!==previous)rank=i+1;previous=p.pos;return {id:p.id,name:p.name,color:p.color,shape:p.shape,pos:p.pos,place:rank,...freshStats(),...stats(p)}});}
 function reset(g){g.players.forEach(p=>Object.assign(p,{pos:0,effect:null,hint:false,pig:null,locked:false,solo:false,head:false,overshootStreak:0,stats:freshStats()}));Object.assign(g,{phase:'lobby',qi:0,queue:[],active:null,deadline:null,unlock:null,roller:null,roll:null,winner:null,notice:'',phaseId:g.phaseId+1});}
@@ -93,7 +93,7 @@ io.on('connection',s=>{
  s.on('start',()=>{const g=auth(s);if(!g||g.phase!=='lobby'||!g.players.length||!g.questions.length)return;g.phase='ready';emit(g)});
  s.on('next',()=>{const g=auth(s);if(!g)return;if(g.phase==='ready'||g.phase==='reveal'&&!g.roller||g.phase==='moved'){question(g)}else if(g.phase==='reveal'&&g.roller){g.phase='roll';g.roll=null;emit(g)}else if(g.phase==='winner'){reset(g);g.phase='ready';emit(g)}});
  s.on('buzz',({phaseId})=>{const v=player(s);if(!v)return;const {g,p}=v;if(g.phase!=='question'||phaseId!==g.phaseId||p.buzzed||p.wrong)return;const solos=g.players.filter(x=>x.solo);if(solos.length&&!p.solo||p.locked)return;const unlock=p.solo?g.questionStart||g.unlock:g.unlock+(p.head?0:g.players.some(x=>x.head)?5000:0);if(Date.now()<unlock)return;p.buzzed=true;g.queue.push(p.id);g.queueTimes[p.id]=Date.now()-unlock;if(!g.active)g.active=p.id;emit(g)});
- s.on('judge',correct=>{const g=auth(s);if(!g||g.phase!=='question'||!g.active)return;const p=g.players.find(x=>x.id===g.active);if(correct){g.roller=p.id;reveal(g)}else{p.wrong=true;g.active=g.queue.find(id=>!g.players.find(x=>x.id===id).wrong)||null;emit(g)}});
+ s.on('judge',correct=>{const g=auth(s);if(!g||g.phase!=='question'||!g.active)return;const p=g.players.find(x=>x.id===g.active);if(correct){stats(p).questions++;g.roller=p.id;reveal(g)}else{p.wrong=true;g.active=g.queue.find(id=>!g.players.find(x=>x.id===id).wrong)||null;emit(g)}});
  s.on('timer',action=>{const g=auth(s);if(!g||g.phase!=='question')return;if(action==='start')g.deadline=Date.now()+10000;if(action==='pause')g.deadline=null;emit(g)});
  s.on('reveal',()=>{const g=auth(s);if(!g||g.phase!=='question')return;g.roller=null;reveal(g)});
  s.on('hint',()=>{const v=player(s);if(!v)return;const {g,p}=v;if(g.phase!=='question'||g.active!==p.id||!p.hint)return;p.hint=false;stats(p).hints++;g.currentHintUsed=true;s.emit('privateHint',g.currentQuestion?.hint||'No hint provided');emit(g)});
