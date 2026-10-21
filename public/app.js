@@ -51,6 +51,13 @@ socket.on('home',()=>{localStorage.removeItem('triviaRace');sessionStorage.remov
 $('file').onchange=async e=>{const f=e.target.files[0];if(!f)return;const bytes=new Uint8Array(await f.arrayBuffer());let str='';for(let i=0;i<bytes.length;i++)str+=String.fromCharCode(bytes[i]);socket.emit('upload',{data:btoa(str),name:f.name},r=>{const info=$('uploadInfo');if(r.error){info.style.color='#ff8998';info.textContent='UPLOAD REJECTED\n'+r.error;err('Question validation failed')}else{info.style.color='#7de5ae';info.textContent=`✓ Validated ${r.count} questions in ${r.setName}\n${r.used} previously used · ${r.remaining} currently unused`}})};
 function token(p){const symbol={Circle:'●',Square:'■',Triangle:'▲',Star:'★',Heart:'♥',Octagon:'⬣'}[p.shape]||'●';return `<span class="token" title="${escapeHtml(p.name)}" style="color:${hex[p.color]};${p.color==='White'?'text-shadow:0 0 3px #000':''}">${symbol}</span>`}function escapeHtml(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function btn(label,fn,cls=''){const b=document.createElement('button');b.textContent=label;b.className=cls;b.onclick=fn;return b}function add(parent,label,fn,cls){parent.appendChild(btn(label,fn,cls))}
+
+const leaderboardColumns=[['place','🏅','Place'],['name','👤','Player'],['pos','🏁','Final Position'],['spacesMoved','🏃','Spaces Moved'],['blankSpaces','🟨','Blank Spaces'],['extraMovement','➕','Extra Movement'],['chooseSpaces','🎯','Choose Spaces'],['chosenMovement','🎯S','Chosen Movement'],['hints','💡','Hints Used'],['swaps','🔄','Swaps'],['piggyBacks','🐖','Piggy Backs'],['piggyBackDistance','🐖S','Piggy Back Distance'],['ridesGiven','🚕','Rides Given'],['rideDistance','🚕S','Ride Distance'],['headStarts','⏱','Head Starts'],['solos','♟','Solos'],['lockOuts','🔒','Lock Outs'],['overshoots','⏩','Overshoots']];
+let leaderboardKey='',leaderboardTimer=null,leaderboardVisible=false;
+function showLeaderboard(){if(!state||state.phase!=='winner'||!state.leaderboard)return;leaderboardVisible=true;$('winner').classList.add('hidden');$('leaderboard').classList.remove('hidden');}
+function renderLeaderboard(s){if(!s.leaderboard)return;const key=s.code+':'+s.phaseId+':'+s.winner;if(leaderboardKey===key)return;leaderboardKey=key;leaderboardVisible=false;$('leaderboard').classList.add('hidden');$('leaderHead').innerHTML='<tr>'+leaderboardColumns.map(([k,icon,label])=>`<th title="${label}">${icon}<div>${label}</div></th>`).join('')+'</tr>';$('leaderBody').innerHTML=s.leaderboard.map(p=>'<tr>'+leaderboardColumns.map(([key])=>'<td>'+(key==='place'?(['🥇','🥈','🥉'][p.place-1]||'🏅')+' '+p.place+(p.place===1?'st':p.place===2?'nd':p.place===3?'rd':'th'):key==='name'?token(p)+' '+escapeHtml(p.name):Number(p[key]||0))+'</td>').join('')+'</tr>').join('');}
+$('leaderClose').onclick=()=>{$('leaderboard').classList.add('hidden');leaderboardVisible=false;};
+
 function render(){if(!state||!board.length)return;document.body.classList.toggle('playerMode',role==='player');document.body.classList.toggle('hostMode',role==='host');const s=state,me=s.players.find(p=>p.id===pid);$('room').textContent=`ROOM CODE: ${s.code}`;$('setupToggleWrap').classList.toggle('hidden',role!=='host');$('setupPanel').classList.toggle('hidden',role==='player'&&s.phase!=='lobby'||role==='host'&&roomHidden);$('hostSetup').classList.toggle('hidden',role!=='host'||s.phase!=='lobby'&&s.phase!=='exhausted');$('identity').innerHTML=role==='host'?'HOST':me?token(me)+' '+escapeHtml(me.name):'';$('status').textContent=s.phase.toUpperCase()+` · ${s.remaining} questions remaining`;$('players').innerHTML=s.players.map(p=>`<div class="player">${token(p)} ${escapeHtml(p.name)} · ${p.pos} spaces ${p.connected?'🟢':'⚪'} ${s.players.some(x=>x.pig===p.id)?'<span title="Being piggybacked on">🐷</span>':''} ${role==='host'&&s.phase==='lobby'?`<button class="danger" data-remove="${p.id}">Remove</button>`:''}</div>`).join('');document.querySelectorAll('[data-remove]').forEach(b=>b.onclick=()=>socket.emit('remove',b.dataset.remove));
 $('board').innerHTML=board.map(c=>{const background=c.type==='Start'?'#85858a':c.type==='Hint'?'#50c878':c.color==='black & white checkered'?'repeating-conic-gradient(#fff 0% 25%,#333 0% 50%) 50% / 30px 30px':bg[c.color.toLowerCase()]||'#ddd';const ps=s.players.filter(p=>p.pos===c.n);return `<div data-space="${c.n}" data-type="${escapeHtml(c.type)}" class="space ${s.roll&&!s.roll.overshot&&s.roll.landed===c.n?'landing':''}" style="background:${background};${['black & white checkered','burgundy','blue'].includes(c.color)?'color:white;':''}"><small class="spaceNum">${c.n}</small><span class="spaceName">${c.type==='Start'?'START <span class="startArrow">➜</span>':spaceSymbols[c.type]?`<span class="spaceSymbol">${spaceSymbols[c.type]}</span>`:c.type==='Goal'?'GOAL':c.type==='Blank Space'?'':escapeHtml(c.type)}</span><div class="tokens">${ps.map(token).join('')}</div></div>`}).join('');
 $('piggyNotice').classList.toggle('hidden',!s.roll?.piggyEvent||!['moved','choice','winner','tiebreak'].includes(s.phase));$('piggyNotice').textContent=s.roll?.piggyEvent?`${s.roll.piggyEvent.name} piggybacked ${s.roll.piggyEvent.spaces} spaces!`:'';
@@ -60,9 +67,11 @@ const rollPhase=['roll','moved','choice','tiebreak','winner'].includes(s.phase);
 // A winning roll must complete its die and board movement before the victory overlay/audio.
 const winKey=s.phase==='winner'?`${s.code}:${s.phaseId}:${s.winner}:${s.roll?.player||''}:${s.roll?.die||''}`:'';
 if(s.phase!=='winner'){
+  clearTimeout(leaderboardTimer);leaderboardTimer=null;leaderboardKey='';leaderboardVisible=false;$('leaderboard').classList.add('hidden');
   clearTimeout(victoryTimer);victoryTimer=null;victoryKey='';victoryShownKey='';lastWinner='';
   $('winner').classList.add('hidden');
 }else if(winKey!==victoryKey){
+  renderLeaderboard(s);
   clearTimeout(victoryTimer);victoryKey=winKey;
   $('winner').classList.add('hidden');
   // All clients wait for the same visual sequence. Host also animates each board step.
@@ -73,6 +82,7 @@ if(s.phase!=='winner'){
     $('winner').textContent='🎉 '+(state.players.find(p=>p.id===state.winner)?.name||'Player')+' has reached the GOAL! 🎉';
     $('winner').classList.remove('hidden');victoryShownKey=winKey;
     if(role==='host'&&lastWinner!==winKey){lastWinner=winKey;fanfare()}
+    clearTimeout(leaderboardTimer);leaderboardTimer=setTimeout(()=>{if(state?.phase==='winner'&&victoryKey===winKey)showLeaderboard()},2600);
   },wait);
 }
 $('notice').textContent=s.notice||'';
