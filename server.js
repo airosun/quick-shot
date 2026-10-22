@@ -96,7 +96,7 @@ io.on('connection',s=>{
  s.on('judge',correct=>{const g=auth(s);if(!g||g.phase!=='question'||!g.active)return;const p=g.players.find(x=>x.id===g.active);if(correct){stats(p).questions++;g.roller=p.id;reveal(g)}else{p.wrong=true;g.active=g.queue.find(id=>!g.players.find(x=>x.id===id).wrong)||null;emit(g)}});
  s.on('timer',action=>{const g=auth(s);if(!g||g.phase!=='question')return;if(action==='start')g.deadline=Date.now()+10000;if(action==='pause')g.deadline=null;emit(g)});
  s.on('reveal',()=>{const g=auth(s);if(!g||g.phase!=='question')return;g.roller=null;reveal(g)});
- s.on('hint',()=>{const v=player(s);if(!v)return;const {g,p}=v;if(g.phase!=='question'||g.active!==p.id||!p.hint)return;p.hint=false;stats(p).hints++;g.currentHintUsed=true;s.emit('privateHint',g.currentQuestion?.hint||'No hint provided');emit(g)});
+ s.on('hint',()=>{const v=player(s);if(!v)return;const {g,p}=v;if(g.phase!=='question'||g.active!==p.id||!p.hint)return;p.hint=false;stats(p).hints++;g.currentHintUsed=true;s.emit('privateHint',g.currentQuestion?.hint||'No hint provided');io.to(g.code).emit('hintUsedNotice',{id:g.phaseId+':'+p.id,name:p.name});emit(g)});
  s.on('roll',chosen=>{const v=player(s);if(!v)return;const {g,p}=v;if(g.phase!=='roll'||g.roller!==p.id)return;
  const allowed=eligibleDice(p);
  let die=allowed[Math.floor(Math.random()*allowed.length)];
