@@ -27,7 +27,8 @@ function remember(o){sessionStorage.setItem('triviaRace',JSON.stringify(o));if(o
 function attachPlayer(code,token,id){role='player';playerToken=token;pid=id;remember({role,code,token,id,name:$('name').value});$('entry').classList.add('hidden');$('game').classList.remove('hidden')}
 $('hostOption').onclick=()=>{$('hostEntry').classList.remove('hidden');$('playerEntry').classList.add('hidden')};$('playerOption').onclick=()=>{$('playerEntry').classList.remove('hidden');$('hostEntry').classList.add('hidden')};
 $('create').onclick=()=>socket.emit('create',{},r=>r?.code?attachHost(r.code,r.token):err(r?.error||'Could not create lobby'));
-$('join').onclick=()=>socket.emit('join',{code:$('code').value,name:$('name').value,color:$('color').value,shape:$('shape').value},r=>r.error?err(r.error):attachPlayer($('code').value.toUpperCase(),r.token,r.id));
+$('code').addEventListener('input',()=>{const field=$('code');const start=field.selectionStart,end=field.selectionEnd;field.value=field.value.toUpperCase();if(start!==null&&end!==null)field.setSelectionRange(start,end)});
+$('join').onclick=()=>socket.emit('join',{code:$('code').value.toUpperCase(),name:$('name').value,color:$('color').value,shape:$('shape').value},r=>r.error?err(r.error):attachPlayer($('code').value.toUpperCase(),r.token,r.id));
 function resumeSession(){
  if(!socket.connected||resumePending)return;
  let o;try{o=JSON.parse(sessionStorage.getItem('triviaRace')||localStorage.getItem('triviaRace')||'null')}catch{return}
