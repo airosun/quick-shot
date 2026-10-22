@@ -103,14 +103,15 @@ Its columns are represented by icons; hover over an icon, or tap it on a touch s
 
 ## Preparing questions
 
-Create an **.xlsx or .xls** workbook. Use the first worksheet and these **five headers in columns A–E**:
+Create an **.xlsx or .xls** workbook. Use the first worksheet and these **five required headers in columns A–E**, plus an optional creator-only **Show** column in F:
 
 | A | B | C | D | E |
 | --- | --- | --- | --- | --- |
-| **ID** | **Question** | **Answer** | **Hint** | **Images** |
+| **ID** | **Question** | **Answer** | **Hint** | **Images** | **Show** |
 
 - **ID, Question, and Answer** are required for every question. IDs must be unique within the sheet.
 - **Hint** is optional.
+- **Show** (column F) is for the question-set creator only. It is ignored by the game and never displayed to players or the host.
 - **Images** is optional: supply a public `http://` or `https://` image URL or an Excel hyperlink to an image.
 - The host uploads the workbook before starting. Invalid sheets are rejected with an explanation.
 - Questions are selected without repeating a question ID until the set's unused questions are exhausted. Question history is tracked by **uploaded filename** (without extension), so reusing a filename retains its question history.
