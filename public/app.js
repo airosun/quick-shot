@@ -132,7 +132,7 @@ function updateQuestionStatus(s,me){
   const soloPlayer=s.players.find(p=>p.solo);const headPlayer=s.players.find(p=>p.head);
   const now=Date.now()+serverOffset;
   if(me.locked){kind='locked';message='YOU ARE LOCKED OUT';}
-  else if(soloPlayer&&soloPlayer.id!==pid){kind='solo';message="HE'S RUNNING THE ONES!";}
+  else if(soloPlayer&&soloPlayer.id!==pid){kind='solo';message=`${soloPlayer.name} IS RUNNING THE ONES!`;}
   else if(headPlayer){const unlock= s.unlock+(me.head?0:5000);if(now<unlock){kind='head';message=me.head?'YOU HAVE A HEAD START':`${headPlayer.name} HAS A HEAD START SO HOLD TIGHT!`;}}
  }
  el.className='questionStatusNotice'+(kind?' '+kind:' hidden');el.textContent=message;
