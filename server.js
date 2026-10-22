@@ -1,6 +1,6 @@
 const express=require('express'),http=require('http'),{Server}=require('socket.io'),XLSX=require('xlsx'),crypto=require('crypto'),fs=require('fs'),path=require('path');
 const board=require('./board.json');const app=express(),server=http.createServer(app),io=new Server(server,{maxHttpBufferSize:5e6});app.use(express.static('public'));app.get('/health',(_,r)=>r.json({ok:true}));
-const games=new Map(),COLORS=['Red','Orange','Yellow','Green','Light Blue','Blue','Purple','Pink','Black','White'],SHAPES=['Circle','Square','Triangle','Star','Heart','Octagon','Diamond','Cross'];
+const games=new Map(),COLORS=['Red','Orange','Yellow','Green','Light Blue','Blue','Purple','Pink','Black','White'],SHAPES=['Circle','Square','Triangle','Star','Heart','Hexagon','Diamond'];
 // Usage is keyed by the uploaded workbook's filename and stored on disk.
 // Set DATA_DIR to a persistent disk mount in production to survive redeploys.
 const DATA_DIR=process.env.DATA_DIR||path.join(__dirname,'data');
