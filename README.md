@@ -12,7 +12,7 @@
 ## Setting up a game
 
 1. The host selects **HOST** and creates a room, then shares the displayed room code.
-2. Players select **PLAYER**, enter the code and their name, and choose an available token/color.
+2. Players select **PLAYER**, enter the code and their name (**12 characters maximum**), and choose an available token/color. Room-code letters automatically capitalize as they are entered or pasted. Available token shapes are Circle, Square, Triangle, Star, Heart, Hexagon, and Diamond.
 3. The host uploads a question spreadsheet and starts the game once everyone has joined.
 4. All players begin on **START (space 0)**. The host advances the game using the on-screen controls.
 
@@ -24,7 +24,7 @@
 4. If the answer is incorrect, the next player in the buzz queue can try. The host may start or pause the **10-second answer timer**.
 5. When a player answers correctly, the host reveals the answer and advances to that player's roll. If no one answers correctly, the host reveals the answer and moves on to another question.
 
-The host can open a **private Answer Monitor** to see the correct answer and hint without revealing them to the players.
+The host can open a **private Answer Monitor** to see the correct answer and hint without revealing them to the players. The host can also open a separate **Question Log** window at any point (see below). When the answer is revealed to everyone, the question’s hint appears beneath the answer. On desktop and laptop computers, players can press **Space** to buzz when their buzzer is enabled.
 
 ## Rolling and moving
 
@@ -43,7 +43,7 @@ The board has **51 spaces, numbered 0–50**. Landing on a special space activat
 | Space | What it does |
 | --- | --- |
 | **START** | All players begin here at space 0. |
-| **Blank Space** 🟨 | No special effect. |
+| **Blank Space** 🟨 | Normally no special effect. One randomly chosen blank space hides the one-time **Secret Extra Roll** each game. |
 | **Add 2** +2 | Adds 2 spaces to the player's **next roll**. |
 | **Add 3** +3 | Adds 3 spaces to the player's **next roll**. |
 | **Double** ×2 | Doubles the number on the player's **next roll**. |
@@ -56,6 +56,10 @@ The board has **51 spaces, numbered 0–50**. Landing on a special space activat
 | **Locked Out** 🔒 | The player cannot buzz on the next affected question. |
 | **GOAL** 🏁 | Land exactly on space 50 to win. |
 
+### Secret Extra Roll space 🎲
+
+At the beginning of each game, **one random Blank space** secretly becomes the Extra Roll space. Until someone finds it, it looks identical to a regular blank space on **every board**. The first player to land on it receives an additional roll, and a prominent **“You Found the Secret Space! Roll Again”** announcement plays with a bell sound. The space then displays a **🎲 dice icon** on the host and all player boards for the remainder of the game. **Only the first discovery grants a bonus roll**; subsequent landings do not. If nobody finds it, the dice icon is revealed when the game ends. The revealed icon remains visible on the finished game board even after the final leaderboard is closed.
+
 A special ability that applies to a future question or roll stays available until its applicable use. Board landing effects do not chain simply because a player is swapped onto a special space.
 
 ## Piggyback rides explained
@@ -66,7 +70,7 @@ When a player lands on a Piggy Back space, they choose another player and press 
 
 When a player reaches GOAL, the game plays the **dice animation**, then the **token movement animation**, and only afterward the **victory fanfare and confetti**. After the fanfare, the **Final Leaderboard** appears on every screen. It can be closed and reopened using **View Final Leaderboard**.
 
-The leaderboard sorts by **Final Position** (highest board space first). Players on the same space share a place; the next place is skipped as appropriate (for example, **1st, 2nd, 2nd, 4th**). Gold, silver, and bronze medals mark the top three places.
+The leaderboard sorts by **Final Position** (highest board space first). Players on the same space share a place; the next place is skipped as appropriate (for example, **1st, 2nd, 2nd, 4th**). **Only** 1st, 2nd, and 3rd places receive gold, silver, and bronze medals, respectively. Tied players at those places share the corresponding medal; 4th place and below receive no medal.
 
 Its columns are represented by icons; hover over an icon, or tap it on a touch screen, to see the statistic's name:
 
@@ -82,7 +86,7 @@ Its columns are represented by icons; hover over an icon, or tap it on a touch s
 | **Choose Spaces** 🎯 | Number of Choose spaces landed on. |
 | **Chosen Movement** 🎯👣 | Sum of movement values chosen for Choose rolls. |
 | **Hints** 💡 | Hints actually used, not merely collected. |
-| **Swaps** 🔄 | Times the player participated in a swap, as initiator or target. |
+| **Swaps** 🔄 | Times the player participated in a swap, as initiator or target. The number **in parentheses** is how many Swap spaces the player personally landed on (for example, **5 (2)**). |
 | **Piggy Backs** 🐷 | Piggy Back spaces landed on. |
 | **Piggy Back Distance** 🐷👣 | Total distance traveled as a piggyback rider. |
 | **Rides Given** 🚕 | Times the player was selected to carry another player. |
@@ -92,21 +96,26 @@ Its columns are represented by icons; hover over an icon, or tap it on a touch s
 | **Lock Outs** 🔒 | Locked Out spaces landed on. |
 | **Overshoots** ⏩ | Rolls that would have moved the player beyond GOAL. |
 
+## Host Question Log
+
+The host can open **OPEN QUESTION LOG** at any time. Like the Answer Monitor, it opens a separate host-only window. Each row represents a question asked during the current game and includes **Q#** (starting at 1), **Question**, **Answer**, and **one column per player**. Player cells display **Yes** (green) if that player answered correctly or **No** (red) if they answered incorrectly or did not answer. If the player used a **Hint**, or had a **Solo** or **Head Start** effect for that question, the corresponding label appears in parentheses, such as **Yes (Hint)** or **No (Head Start)**. The log tracks the questions asked during the current game and is separate from the private Answer Monitor.
+
 ## Host controls and player screens
 
 - The host sees the board, a player list ordered by **current position**, the question, and the buzz queue.
 - Clicking a player in the host list focuses the board on that token.
 - **Zoom Out** shows the full board; **Zoom In** returns to the normal view focused on the leader. Rolling and movement automatically restore the normal view and follow the active player.
 - The host can hide the room/question-set details to make more room for gameplay.
-- Players see their own board view, buzzer, and available abilities. Notices explain Locked Out, Solo, Head Start, and piggyback effects.
+- Players see their own board view, buzzer, and available abilities. The Hint button is positioned **above** the buzzer so it does not shift the buzzer when it appears. Players using a keyboard can buzz with **Space**. Notices explain Locked Out, Solo, Head Start, and piggyback effects.
+- The host sees a light-green notice when a player uses a Hint. A locked-out player sees **YOU ARE LOCKED OUT** for the affected question; non-Solo players see **{Player} IS RUNNING THE ONES!** during a Solo question; Head Start notices persist until each player’s buzzer unlocks.
 - The host's **NEXT** button advances between the appropriate question, reveal, and roll stages.
 
 ## Preparing questions
 
-Create an **.xlsx or .xls** workbook. Use the first worksheet and these **five required headers in columns A–E**, plus an optional creator-only **Show** column in F:
+Create an **.xlsx or .xls** workbook. Use the first worksheet and columns **A–F** (with **Show** reserved for the creator):
 
-| A | B | C | D | E |
-| --- | --- | --- | --- | --- |
+| A | B | C | D | E | F |
+| --- | --- | --- | --- | --- | --- |
 | **ID** | **Question** | **Answer** | **Hint** | **Images** | **Show** |
 
 - **ID, Question, and Answer** are required for every question. IDs must be unique within the sheet.
