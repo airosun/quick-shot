@@ -1,215 +1,385 @@
-<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>Quick Shot</title><style>
-:root{font-family:system-ui,Arial;color:#f6f7ff;background:#101524}*{box-sizing:border-box}body{margin:0}header{background:#1b2338;padding:14px 20px;display:flex;justify-content:space-between;align-items:center}h1{margin:0;font-size:24px}main{padding:20px;max-width:1450px;margin:auto}.panel{background:#1c263c;border:1px solid #35415d;border-radius:14px;padding:18px;margin:12px 0}.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}button,input,select{font:inherit;border-radius:9px;padding:11px;border:1px solid #4c5a78}button{background:#586bfa;color:white;font-weight:700;cursor:pointer}button:disabled{opacity:.35;cursor:default}button.alt{background:#37445f}button.danger{background:#a73749}input,select{background:#11192a;color:white}input[type=file]{max-width:100%}.muted{color:#b2bfd8}.board{display:flex;gap:7px;overflow-x:auto;padding:14px 4px 20px;scroll-behavior:smooth}.space{flex:0 0 102px;width:102px;height:114px;border:2px solid #78829a;border-radius:8px;padding:5px;color:#111;text-align:center;font-weight:800;font-size:13px;position:relative;display:flex;flex-direction:column;justify-content:space-between}.space small{align-self:flex-start}.tokens{display:flex;flex-wrap:wrap;gap:3px;justify-content:center}.token{display:inline-flex;align-items:center;justify-content:center;width:27px;height:27px;font-size:19px;text-shadow:0 1px 2px #222;-webkit-text-stroke:.5px #333;filter:drop-shadow(0 0 1px black)}.players{display:flex;gap:10px;flex-wrap:wrap}.player{padding:9px;background:#283550;border-radius:8px}.question{font-size:clamp(21px,3vw,36px);font-weight:800}.answer{background:#17563f;padding:18px;border-radius:8px;font-size:clamp(27px,3.5vw,46px);font-weight:900;line-height:1.25;text-align:center;overflow-wrap:anywhere}.queue{min-width:210px;flex:1}.strike{text-decoration:line-through;opacity:.55}.active{outline:2px solid #f6c44b}.controls{position:sticky;bottom:0;background:#141d31;border-top:1px solid #475571;padding:12px;display:flex;gap:9px;flex-wrap:wrap;z-index:4}.hidden{display:none!important}.big{font-size:26px;padding:20px 35px}.die{font-size:80px;text-align:center}.notice{color:#ffd56d}.winner{font-size:46px;text-align:center;color:#ffe080}.overlay{display:flex;gap:15px;align-items:stretch;flex-wrap:wrap}.overlay>.panel:first-child{flex:3;min-width:260px}.overlay>.panel:last-child{flex:1}.topToken{font-size:30px}.buzzerLocked{background:#c33146!important;color:white!important;opacity:1!important}.buzzerReady{background:#168b4b!important;color:white!important;opacity:1!important}.landing{outline:5px solid #ffdf62;outline-offset:2px;box-shadow:0 0 25px #ffdf62;transform:translateY(-4px)}.landedBanner{font-size:23px;font-weight:900;background:#334463;border:2px solid #f6cc54;border-radius:12px;padding:14px;margin:12px 0}.roomCodeBig{font-size:clamp(28px,4vw,46px);font-weight:900;letter-spacing:3px;color:#ffe28a}.setupToggle{margin:12px 0}.roomSection{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.playerBoardHeader{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.boardStatus{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.boardStatus .player{font-size:15px}#error{color:#ff8998;min-height:24px}#clock{font-size:25px;font-weight:bold} @media(max-width:600px){main{padding:10px}.space{flex-basis:85px;width:85px}.controls button{padding:9px}}
-.targetChoice{display:inline-flex;align-items:center;gap:9px;padding:12px 16px}.selectedTarget{outline:3px solid #67e9a4}.swapConfirm{width:100%;padding:14px;border:2px solid #67e9a4;border-radius:12px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}.swapConfirm button{background:#269d62;color:white}
-/* Quick Shot — charcoal arcade presentation */
-:root{color-scheme:dark;color:#f5f5f5;background:#0c0c0e}body{background:radial-gradient(ellipse at 50% -30%,#353535 0%,#141416 47%,#09090b 100%);min-height:100vh}header{background:#171719;border-bottom:1px solid #444}header h1{letter-spacing:.06em;text-transform:uppercase}main{max-width:1650px}.panel{background:#202023;border:1px solid #46464a;box-shadow:0 8px 24px #0004}button{background:#ededed;color:#111;border:1px solid #999;transition:transform .12s,filter .12s}button:hover:not(:disabled){filter:brightness(1.1);transform:translateY(-1px)}button.alt{background:#444449;color:#fff}button.danger{background:#a52935;color:white}input,select{background:#111113;border-color:#5a5a60}.muted{color:#bcbcc1}.controls{background:#101012;border-color:#515156;box-shadow:0 -6px 22px #0009}.player{background:#333337;border:1px solid #55555b}.landedBanner{background:#292929;border-color:#ffdd7b;color:#fff;box-shadow:0 0 25px #e8b84440}.space{flex:0 0 124px;width:124px;height:124px;min-width:124px;border:3px solid #ffffffa6;border-radius:11px;padding:8px;color:#141414;font-size:15px;line-height:1.13;box-shadow:inset 0 0 0 1px #0004,0 3px 9px #0008;overflow:visible;transition:transform .25s,box-shadow .25s}.space .spaceName{display:block;overflow-wrap:anywhere;word-break:normal;text-shadow:0 1px 1px #ffffff4d;font-size:clamp(13px,1.25vw,16px);font-weight:950;line-height:1.12;letter-spacing:-.025em}.space .spaceNum{font-size:13px;border-radius:5px;padding:2px 6px;background:#0003;color:inherit}.space .tokens{min-height:27px;align-items:center}.space .token{width:21px;height:22px;font-size:18px}.space[data-type="Double"]{background:linear-gradient(135deg,#fff4ad 0%,#f8d24c 22%,#a86a09 50%,#ffe882 76%,#b8780b 100%)!important;border-color:#ffed8a;box-shadow:0 0 20px #ffcc4080,inset 0 0 12px #fff6a7;animation:goldPulse 2.5s ease-in-out infinite}.space[data-type="Double"]::after{content:'✦';position:absolute;right:7px;top:4px;color:white;text-shadow:0 0 8px #fff,0 0 13px #ffe45e;animation:twinkle 1.6s infinite alternate}.space[data-type="Double"]::before{content:'✧';position:absolute;left:30px;bottom:23px;color:white;text-shadow:0 0 10px #fff;animation:twinkle 2.2s .6s infinite alternate}.space.landing{outline:5px solid #fff5a0;outline-offset:2px;box-shadow:0 0 28px #ffdb66,0 0 55px #ffd85e88;z-index:2;animation:landingPop .6s ease-out}.space.movingTarget{outline:4px solid #fff;outline-offset:2px;z-index:3}.space[data-type="Goal"]{border-color:#fff;box-shadow:0 0 20px #ffffff70}.board{gap:10px;padding:20px 10px 30px;scroll-padding:30px}.question{line-height:1.3}.queue p{padding:8px;border-bottom:1px solid #ffffff20}.buzzTime{font-size:13px;color:#ffdf91;margin-left:7px;font-variant-numeric:tabular-nums}.active{outline:2px solid #ffdd80;background:#5c4c2940;border-radius:5px}.die{font-size:100px;filter:drop-shadow(0 0 16px #fff5)}.die.rolling{animation:diceShake .13s linear infinite}.winner{color:#ffdf7e;text-shadow:0 0 30px #e3ae58}.roomCodeBig{color:#ffe19a}.buzzerLocked{background:#bf283b!important}.buzzerReady{background:#168e4b!important}.tokenMotion{animation:landingPop .35s ease-out}.confettiPiece{position:fixed;top:-30px;pointer-events:none;z-index:1000;animation:confettiFall var(--duration) linear forwards}.winnerFanfare{animation:landingPop .7s ease-out infinite alternate}
-@keyframes goldPulse{50%{filter:brightness(1.14);box-shadow:0 0 30px #ffdf78,inset 0 0 20px #fff3b2}}@keyframes twinkle{from{opacity:.25;transform:scale(.7) rotate(-10deg)}to{opacity:1;transform:scale(1.35) rotate(15deg)}}@keyframes landingPop{0%{transform:scale(.85)}65%{transform:scale(1.09)}100%{transform:scale(1)}}@keyframes diceShake{0%{transform:rotate(-13deg) translateX(-4px)}50%{transform:rotate(15deg) translateX(4px)}100%{transform:rotate(-13deg) translateX(-4px)}}@keyframes confettiFall{to{transform:translate(var(--drift),110vh) rotate(var(--spin));opacity:0}}@media(max-width:600px){.space{flex-basis:112px;min-width:112px;width:112px;height:116px}.space .spaceName{font-size:14px}.board{gap:7px}.controls{padding:9px}}
-
-.space{flex:0 0 188px!important;min-width:188px!important;width:188px!important;height:188px!important}
-.space .spaceName{font-size:23px!important;font-weight:900;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;flex:1}
-.spaceSymbol{font-size:57px;line-height:1.1;filter:drop-shadow(0 2px 2px #0004)}
-.startArrow{font-size:52px;line-height:1}
-.piggyNotice{background:#b92d80;color:#fff;border:2px solid #ff9dd5;border-radius:12px;text-align:center;font-weight:900;font-size:22px;padding:13px;margin:10px 0;box-shadow:0 0 20px #fa4db855}
-@media(max-width:600px){.space{flex-basis:158px!important;min-width:158px!important;width:158px!important;height:158px!important}.spaceSymbol{font-size:43px}.startArrow{font-size:40px}}
-.space[data-type="Goal"] .spaceName{display:block!important;color:#fff!important;font-weight:1000!important;font-size:clamp(27px,3vw,40px)!important;letter-spacing:.06em;text-shadow:0 3px 2px #000,0 5px 9px #000,2px 2px 3px #000!important}.space[data-type="Double"] .spaceSymbol{font-size:clamp(32px,3vw,46px)!important;font-weight:950!important;text-shadow:0 2px 3px #fff8}
-
-/* Host tools remain available even when the room section is hidden. */
-#setupToggleWrap{display:flex;align-items:center;justify-content:space-between;gap:12px}
-#openAnswerMonitorTop{margin-left:auto}
-/* Player view: fit the buzzer and controls in the visible device viewport. */
-body.playerMode{height:100dvh;overflow:hidden;display:flex;flex-direction:column}
-body.playerMode header{flex:0 0 auto;padding:7px 12px;min-height:42px}
-body.playerMode header h1{font-size:clamp(17px,3vw,22px)}
-body.playerMode main{flex:1;min-height:0;width:100%;display:flex;flex-direction:column;padding:5px 10px 8px;overflow:hidden}
-body.playerMode #error{min-height:0;flex:0 0 auto;font-size:12px}
-body.playerMode #game{display:flex;flex-direction:column;flex:1;min-height:0;gap:5px;overflow:hidden}
-body.playerMode .panel{margin:0;padding:8px;border-radius:10px}
-body.playerMode #boardWrap{flex:0 0 auto;min-height:0;padding:5px 8px}
-body.playerMode .playerBoardHeader h2{font-size:15px;margin:2px 0}
-body.playerMode .boardStatus{gap:4px}
-body.playerMode .boardStatus .player{font-size:11px;padding:3px 6px}
-body.playerMode #board{height:clamp(75px,17dvh,150px);min-height:0!important;padding:5px!important;gap:6px!important;align-items:center}
-body.playerMode .space{flex:0 0 clamp(72px,13dvh,126px)!important;min-width:clamp(72px,13dvh,126px)!important;width:clamp(72px,13dvh,126px)!important;height:clamp(72px,13dvh,126px)!important;padding:5px!important}
-body.playerMode .space .spaceName{font-size:14px!important;gap:1px!important}
-body.playerMode .space .spaceNum{font-size:11px!important;padding:1px 3px}
-body.playerMode .spaceSymbol{font-size:clamp(23px,5dvh,38px)}
-body.playerMode .startArrow{font-size:24px}
-body.playerMode #questionWrap{flex:1 1 auto;min-height:0;overflow:auto;display:flex;flex-direction:column;gap:4px}
-body.playerMode #questionWrap>.panel{min-width:0;flex:0 0 auto}
-body.playerMode #questionWrap>.panel:last-child{display:none}
-body.playerMode .question{font-size:clamp(17px,2.9dvh,27px)}
-body.playerMode .questionImage{max-height:clamp(70px,22dvh,220px);margin:6px auto}
-body.playerMode #rollWrap,body.playerMode #choiceWrap{flex:1 1 auto;min-height:0;overflow:auto}
-body.playerMode .die{font-size:clamp(44px,9dvh,80px)}
-body.playerMode #landed,body.playerMode #piggyNotice{font-size:13px;padding:5px;margin:2px 0}
-body.playerMode #winner,body.playerMode #notice{font-size:14px;flex:0 0 auto}
-body.playerMode #playerActions{flex:0 0 auto;margin-top:auto;padding:7px;max-height:42dvh;overflow-y:auto;box-shadow:0 -5px 18px #0008}
-body.playerMode #actions{justify-content:center}
-body.playerMode #buzzButton{width:min(100%,540px);min-height:clamp(60px,12dvh,104px);font-size:clamp(23px,5dvh,38px);padding:8px}
-body.playerMode .abilityTray{margin-top:5px;gap:6px;justify-content:center}
-body.playerMode .abilityIcon{height:34px;width:34px;font-size:20px}
-body.playerMode #privateHint{max-height:12dvh;overflow:auto;padding:5px}
-@media(max-height:650px){body.playerMode .boardStatus .player{font-size:10px}body.playerMode #board{height:85px}body.playerMode .space{flex-basis:75px!important;min-width:75px!important;width:75px!important;height:75px!important}body.playerMode .spaceSymbol{font-size:24px}body.playerMode #playerActions{padding:4px}body.playerMode #buzzButton{min-height:55px}}
-</style><style>
-.space{flex:0 0 164px!important;min-width:164px!important;width:164px!important;height:164px!important;font-size:19px!important;padding:12px!important}.space .spaceName{font-size:19px!important;line-height:1.15!important}.space .spaceNum{font-size:16px!important}.board{gap:13px!important;min-height:218px}.space[data-type="Start"]{background:#85858a!important;color:#111!important}.space[data-type="Hint"]{background:#50c878!important;color:#102a18!important}.space[data-type="Blank Space"] .spaceName{display:none!important}.abilityTray{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:15px}.abilityIcon{width:50px;height:50px;display:inline-flex;align-items:center;justify-content:center;border-radius:10px;border:2px solid #bbb;background:#303033;color:white;font-size:29px;font-weight:950;box-shadow:0 2px 9px #0007}.abilityAdd3,.abilityAdd2,.abilityDouble{font-size:24px;border-radius:5px}.abilityHint{background:#168d49}.abilityLockedOut{background:#a72b36}.abilityDouble{background:#b58b23;color:#111}.abilityPiggyBack{background:#ac6983}.pendingMovement .token{visibility:hidden}.motionGhost{position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);z-index:6;filter:drop-shadow(0 0 10px white);animation:landingPop .22s ease-out}.motionGhost .token{font-size:36px!important;width:40px!important;height:40px!important}.swapFlash{animation:swapFlash 0.35s ease-in-out 5!important;z-index:4}.swapAnnouncement{position:fixed;left:50%;top:24%;transform:translateX(-50%);z-index:100;background:#151515;border:3px solid #f4d579;color:#fff;padding:25px 36px;border-radius:16px;font-size:clamp(21px,3vw,40px);font-weight:950;text-align:center;box-shadow:0 0 70px #f7ce5b99;animation:swapEnter .35s ease-out}@keyframes swapFlash{50%{transform:translateY(-12px) scale(1.1);box-shadow:0 0 45px #f9e68e}}@keyframes swapEnter{from{opacity:0;transform:translate(-50%,-35px)}to{opacity:1;transform:translate(-50%,0)}}@media(max-width:600px){.space{flex-basis:140px!important;min-width:140px!important;width:140px!important;height:140px!important}.space .spaceName{font-size:16px!important}}
-
-.space{flex:0 0 188px!important;min-width:188px!important;width:188px!important;height:188px!important}
-.space .spaceName{font-size:23px!important;font-weight:900;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;flex:1}
-.spaceSymbol{font-size:57px;line-height:1.1;filter:drop-shadow(0 2px 2px #0004)}
-.startArrow{font-size:52px;line-height:1}
-.piggyNotice{background:#b92d80;color:#fff;border:2px solid #ff9dd5;border-radius:12px;text-align:center;font-weight:900;font-size:22px;padding:13px;margin:10px 0;box-shadow:0 0 20px #fa4db855}
-@media(max-width:600px){.space{flex-basis:158px!important;min-width:158px!important;width:158px!important;height:158px!important}.spaceSymbol{font-size:43px}.startArrow{font-size:40px}}
-.space[data-type="Goal"] .spaceName{display:block!important;color:#fff!important;font-weight:1000!important;font-size:clamp(27px,3vw,40px)!important;letter-spacing:.06em;text-shadow:0 3px 2px #000,0 5px 9px #000,2px 2px 3px #000!important}.space[data-type="Double"] .spaceSymbol{font-size:clamp(32px,3vw,46px)!important;font-weight:950!important;text-shadow:0 2px 3px #fff8}
- .questionImage{display:block;max-width:100%;max-height:420px;object-fit:contain;margin:18px auto 8px;border-radius:12px;border:1px solid #666;background:#151515} 
-/* Mobile player layout: final overrides after legacy board rules. */
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#141416"><title>Quick Shot</title><style>
+/* =====================================================================
+   Quick Shot — charcoal arcade presentation
+   One consolidated stylesheet. Board spaces are sized from the space
+   available (container query units), so the same board scales from a
+   phone up to a TV without layout overrides fighting each other.
+   ===================================================================== */
+:root{
+  --bg:#0b0b0d;--panel:#1e1e21;--panel-hi:#26262a;--line:#3d3d44;--line-soft:#ffffff14;
+  --text:#f5f5f5;--muted:#b6b6bd;--gold:#ffd873;--gold-deep:#e9b23f;--green:#1d9a55;--red:#bd2b3d;
+  --radius:14px;--ease-out:cubic-bezier(.2,.8,.2,1);
+  color-scheme:dark;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:var(--text);background:var(--bg);
+  -webkit-text-size-adjust:100%;
+}
+*{box-sizing:border-box}
 html,body{max-width:100%;overflow-x:hidden}
-body.playerMode{height:100vh;height:100dvh;min-height:0;overflow:hidden}
-body.playerMode main{min-width:0;min-height:0;overflow:hidden;padding:4px 8px max(5px,env(safe-area-inset-bottom))}
-body.playerMode #game{min-width:0;min-height:0;overflow:hidden;gap:4px}
-body.playerMode #boardWrap{min-width:0;flex:0 0 auto;padding:4px 6px;overflow:hidden}
-body.playerMode .playerBoardHeader{gap:3px;flex-wrap:nowrap;min-width:0}
-body.playerMode .playerBoardHeader h2{font-size:13px;white-space:nowrap;margin:0}
-body.playerMode .playerBoardHeader small{display:none}
-body.playerMode .boardStatus{min-width:0;max-height:30px;overflow-x:auto;overflow-y:hidden;flex-wrap:nowrap}
-body.playerMode .boardStatus .player{flex:0 0 auto;white-space:nowrap;font-size:10px}
-body.playerMode #board.board{min-width:0;max-width:100%;height:clamp(75px,16dvh,132px)!important;min-height:0!important;gap:5px!important;padding:3px!important;overflow-x:auto;overflow-y:hidden}
-body.playerMode #board .space{flex:0 0 clamp(68px,14dvh,115px)!important;min-width:clamp(68px,14dvh,115px)!important;width:clamp(68px,14dvh,115px)!important;height:clamp(68px,14dvh,115px)!important;padding:4px!important;font-size:12px!important}
-body.playerMode #board .space .spaceName{font-size:clamp(11px,2dvh,15px)!important}
-body.playerMode #board .space .spaceNum{font-size:10px!important}
-body.playerMode #board .spaceSymbol{font-size:clamp(20px,5dvh,36px)!important}
-body.playerMode #questionWrap{min-width:0;flex:1 1 0;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain}
-body.playerMode #questionWrap>.panel{min-width:0;width:100%;padding:8px}
-body.playerMode #questionWrap .question{font-size:clamp(16px,3dvh,25px);overflow-wrap:anywhere}
-body.playerMode #questionWrap .questionImage{max-width:100%;max-height:min(25dvh,175px);object-fit:contain}
-body.playerMode #rollWrap,body.playerMode #choiceWrap{min-width:0;flex:1 1 0;overflow-y:auto;overflow-x:hidden}
-body.playerMode #playerActions{width:100%;min-width:0;max-width:100%;flex:0 0 auto;max-height:min(35dvh,235px);overflow-y:auto;overflow-x:hidden;margin-top:auto;padding:5px 6px max(6px,env(safe-area-inset-bottom));border-radius:10px}
-body.playerMode #actions{display:flex;min-width:0;width:100%;gap:5px;flex-wrap:wrap;justify-content:center}
-body.playerMode #actions button{max-width:100%;min-width:0;flex:1 1 auto;white-space:normal;overflow-wrap:anywhere}
-body.playerMode #buzzButton{display:block;flex:1 1 100%!important;width:100%!important;max-width:100%!important;min-width:0!important;min-height:clamp(62px,12dvh,100px)!important;padding:8px!important;font-size:clamp(24px,5dvh,40px)!important;touch-action:manipulation}
-body.playerMode .abilityTray{gap:5px;margin-top:4px;justify-content:center}
-body.playerMode .abilityIcon{width:clamp(27px,5dvh,37px);height:clamp(27px,5dvh,37px);font-size:clamp(16px,3dvh,23px)}
-body.playerMode #landed,body.playerMode #piggyNotice{font-size:12px;padding:4px;margin:2px 0}
-body.playerMode #winner:not(.hidden){position:fixed;inset:0;z-index:1100;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;background:rgba(0,0,0,.87);padding:24px max(18px,env(safe-area-inset-right)) 24px max(18px,env(safe-area-inset-left));font-size:clamp(30px,8vw,60px)!important;line-height:1.18;font-weight:1000;color:#ffe28a;text-shadow:0 3px 5px #000,0 0 35px #e7b44c;overflow-wrap:anywhere;animation:mobileVictoryPop .55s ease-out both;pointer-events:none}
-@keyframes mobileVictoryPop{from{opacity:0;transform:scale(.82)}to{opacity:1;transform:scale(1)}}
-@media(max-height:650px){body.playerMode header{padding:4px 8px;min-height:34px}body.playerMode #board.board{height:75px!important}body.playerMode #board .space{flex-basis:68px!important;min-width:68px!important;width:68px!important;height:68px!important}body.playerMode #playerActions{max-height:39dvh}body.playerMode #buzzButton{min-height:58px!important}}
-@media(max-width:380px){body.playerMode header h1{font-size:16px}body.playerMode #playerActions{padding:4px}body.playerMode .playerBoardHeader h2{font-size:12px}}
+body{margin:0;min-height:100vh;min-height:100dvh;background:radial-gradient(ellipse 120% 70% at 50% -20%,#34343a 0%,#151518 48%,#09090b 100%) fixed}
+h1,h2,h3{line-height:1.15}
+.hidden{display:none!important}
+.held{display:none!important}
+.veiled{visibility:hidden}
+.muted{color:var(--muted)}
 
+/* ---------- header ---------- */
+header{position:relative;z-index:10;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 18px;min-height:52px;background:linear-gradient(#1b1b1e,#141416);border-bottom:1px solid var(--line);box-shadow:0 4px 18px #0007}
+header h1{margin:0;font-size:clamp(17px,2.2vw,23px);font-weight:900;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+#identity{display:flex;align-items:center;gap:7px;font-weight:800;letter-spacing:.04em;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#identity .token{font-size:20px}
+main{padding:16px;max-width:1650px;margin:0 auto}
+#error{color:#ff8b9a;min-height:22px;font-weight:700}
+#error:empty{min-height:0}
 
-/* Host screen: viewport-contained layout, with scrolling only inside content panels. */
-body.hostMode{height:100vh;height:100dvh;min-height:0;display:flex;flex-direction:column;overflow:hidden}
-body.hostMode header{flex:0 0 auto;padding:7px 14px;min-height:42px}
-body.hostMode header h1{font-size:clamp(18px,2.4vw,24px)}
-body.hostMode main{flex:1 1 auto;min-height:0;width:100%;max-width:none;display:flex;flex-direction:column;padding:5px 12px max(5px,env(safe-area-inset-bottom));overflow:hidden}
-body.hostMode #error{flex:0 0 auto;min-height:0;font-size:12px}
-body.hostMode #game{flex:1 1 auto;min-height:0;min-width:0;display:flex;flex-direction:column;gap:5px;overflow:hidden}
-body.hostMode .panel{margin:0;padding:8px 12px}
-body.hostMode #setupToggleWrap{flex:0 0 auto;margin:0;min-height:0}
-body.hostMode #setupToggleWrap button{padding:7px 12px;font-size:13px}
-body.hostMode #setupPanel{flex:0 0 auto;max-height:22dvh;overflow-y:auto}
-body.hostMode #setupPanel p{margin:5px 0}
-body.hostMode #boardWrap{flex:1 1 auto;min-height:100px;min-width:0;display:flex;flex-direction:column;overflow:hidden}
-body.hostMode .playerBoardHeader{flex:0 0 auto;min-width:0;gap:5px}
-body.hostMode .playerBoardHeader h2{font-size:clamp(15px,1.5vw,19px);margin:0}
-body.hostMode .boardStatus{gap:4px;max-height:58px;overflow-y:auto}
-body.hostMode .boardStatus .player{font-size:clamp(10px,1vw,13px);padding:3px 6px}
-body.hostMode .boardStatus .topToken{font-size:20px}
-body.hostMode #landed,body.hostMode #piggyNotice{flex:0 0 auto;font-size:clamp(13px,1.5vw,19px);padding:6px;margin:4px 0}
-body.hostMode #board.board{flex:1 1 auto;min-height:0;min-width:0;max-width:100%;overflow-x:auto;overflow-y:hidden;align-items:center;padding:8px 6px 12px;scrollbar-gutter:stable}
-body.hostMode #board .space{flex-basis:clamp(100px,17dvh,188px)!important;min-width:clamp(100px,17dvh,188px)!important;width:clamp(100px,17dvh,188px)!important;height:clamp(100px,17dvh,188px)!important;padding:5px!important}
-body.hostMode #board .space .spaceName{font-size:clamp(14px,2.1dvh,23px)!important}
-body.hostMode #board .spaceSymbol{font-size:clamp(29px,5.5dvh,57px)!important}
-body.hostMode #board .startArrow{font-size:clamp(26px,5dvh,52px)!important}
-body.hostMode #questionWrap{flex:0 1 auto;min-height:0;max-height:43dvh;overflow:hidden;flex-wrap:nowrap;gap:7px}
-body.hostMode #questionWrap>.panel{min-width:0;margin:0;overflow-y:auto;overscroll-behavior:contain}
-body.hostMode #questionWrap>.panel:first-child{flex:3 1 65%}
-body.hostMode #questionWrap>.panel:last-child{flex:1 1 35%}
-body.hostMode #questionWrap .question{font-size:clamp(17px,2.5dvh,31px)}
-body.hostMode #questionWrap .questionImage{max-height:clamp(70px,17dvh,240px);margin:7px auto}
-body.hostMode #questionWrap .answer{font-size:clamp(21px,3dvh,38px);padding:8px}
-body.hostMode #questionWrap h3{margin:2px 0 6px}
-body.hostMode #questionWrap .queue p{padding:4px;margin:2px 0}
-body.hostMode #rollWrap,body.hostMode #choiceWrap{flex:0 1 auto;min-height:0;max-height:27dvh;overflow-y:auto}
-body.hostMode #rollWrap .die{font-size:clamp(40px,9dvh,85px)}
-body.hostMode #winner{flex:0 0 auto;font-size:clamp(25px,5dvh,46px)}
-body.hostMode #notice{flex:0 0 auto;font-size:13px}
-body.hostMode #hostControls{flex:0 0 auto;position:relative;bottom:auto;margin-top:auto;max-height:25dvh;overflow-y:auto;padding:7px;gap:6px;box-shadow:none}
-body.hostMode #hostControls button{padding:8px 11px;font-size:clamp(12px,1.2vw,15px)}
-@media(max-height:650px){body.hostMode #setupPanel{max-height:16dvh}body.hostMode #questionWrap{max-height:38dvh}body.hostMode .boardStatus{max-height:35px}body.hostMode #hostControls{max-height:22dvh}}
+/* ---------- panels & controls ---------- */
+.panel{background:linear-gradient(180deg,var(--panel-hi),var(--panel));border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin:12px 0;box-shadow:0 10px 28px #0006,inset 0 1px 0 var(--line-soft)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+button,input,select{font:inherit;border-radius:10px;padding:11px 15px;border:1px solid #66666e}
+button{background:linear-gradient(#f4f4f4,#dcdcdc);color:#111;font-weight:800;letter-spacing:.02em;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;box-shadow:0 2px 0 #0006,inset 0 1px 0 #fff8;transition:transform .12s var(--ease-out),filter .15s,box-shadow .15s}
+@media (hover:hover){button:hover:not(:disabled){filter:brightness(1.08)}}
+button:active:not(:disabled){transform:translateY(1px) scale(.98);box-shadow:0 1px 0 #0006}
+button:disabled{opacity:.35;cursor:default}
+button:focus-visible,input:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+button.alt{background:linear-gradient(#45454c,#38383e);color:#fff;border-color:#5c5c64;box-shadow:0 2px 0 #0006,inset 0 1px 0 #ffffff1a}
+button.danger{background:linear-gradient(#c3354a,#9e2435);color:#fff;border-color:#de5a6c;box-shadow:0 2px 0 #0006,inset 0 1px 0 #ffffff26}
+button.primary{background:linear-gradient(#ffe697,#f0be47);color:#1d1504;border-color:#ffefb8}
+button.good{background:linear-gradient(#27b064,#1a8a4c);color:#fff;border-color:#4fd88c;box-shadow:0 2px 0 #0006,inset 0 1px 0 #ffffff30}
+button.big{font-size:clamp(20px,2.4vw,26px);padding:18px 34px}
+input,select{background:#111113;color:#fff;border-color:#55555d}
+input[type=file]{max-width:100%;padding:9px}
+input::placeholder{color:#8a8a92}
 
+/* ---------- entry screen ---------- */
+#entry{max-width:760px;margin:6vh auto 0;text-align:center;padding:clamp(18px,4vw,34px)}
+#entry h2{margin:0 0 18px;font-size:clamp(20px,3vw,28px)}
+#entry>.row{justify-content:center;gap:14px}
+#entry>.row button{flex:1 1 200px;max-width:280px}
+#hostEntry,#playerEntry{margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
+#hostEntry h3,#playerEntry h3{margin:0 0 12px}
+#playerEntry .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#playerEntry .row #join{grid-column:1/-1}
+#code{text-align:center;font-weight:900;letter-spacing:.25em}
+@media (max-width:480px){#playerEntry .row{grid-template-columns:1fr}}
 
-/* Give the question and buzzer queue the majority of the host viewport during trivia. */
-body.hostMode #game:has(#questionWrap:not(.hidden)) #boardWrap{flex:0 1 auto;min-height:0;max-height:clamp(125px,24dvh,240px)}
-body.hostMode #game:has(#questionWrap:not(.hidden)) #board.board{flex:0 0 auto;height:clamp(82px,13dvh,135px);align-items:center;padding:3px 6px;}
-body.hostMode #game:has(#questionWrap:not(.hidden)) #board .space{flex-basis:clamp(72px,11dvh,122px)!important;min-width:clamp(72px,11dvh,122px)!important;width:clamp(72px,11dvh,122px)!important;height:clamp(72px,11dvh,122px)!important}
-body.hostMode #game:has(#questionWrap:not(.hidden)) #board .spaceSymbol{font-size:clamp(23px,4dvh,42px)!important}
-body.hostMode #game:has(#questionWrap:not(.hidden)) #questionWrap{flex:1 1 auto;max-height:none;min-height:0;align-items:stretch}
-body.hostMode #game:has(#questionWrap:not(.hidden)) #questionWrap>.panel{height:100%;min-height:0}
-body.hostMode #game:has(#questionWrap:not(.hidden)) #questionWrap .question{font-size:clamp(23px,3.6dvh,43px);line-height:1.2}
-body.hostMode #game:has(#questionWrap:not(.hidden)) #questionWrap .questionImage{max-height:clamp(100px,28dvh,340px)}
-body.hostMode #game:has(#questionWrap:not(.hidden)) #questionWrap .answer{font-size:clamp(26px,4dvh,48px)}
-body.hostMode #game:has(#questionWrap:not(.hidden)) #questionWrap>.panel:last-child{flex:1 1 32%;font-size:clamp(14px,1.7dvh,19px)}
-@media(max-height:650px){body.hostMode #game:has(#questionWrap:not(.hidden)) #boardWrap{max-height:20dvh}body.hostMode #game:has(#questionWrap:not(.hidden)) #board.board{height:11dvh}}
+/* ---------- room / setup ---------- */
+#setupToggleWrap{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+#setupToggleWrap button{padding:7px 12px;font-size:13px}
+#openAnswerMonitorTop{margin-left:auto}
+.roomSection{display:flex;align-items:center;gap:6px 16px;flex-wrap:wrap}
+.roomCodeBig{font-size:clamp(28px,4vw,46px);font-weight:950;letter-spacing:.08em;color:var(--gold);text-shadow:0 2px 0 #0008,0 0 24px #e9b23f40}
+#status{font-weight:700;letter-spacing:.04em}
+#hostSetup p{margin:12px 0 10px;color:var(--muted)}
+#uploadInfo{white-space:pre-wrap;margin-top:10px;font-weight:700}
 
-#leaderboard{position:fixed;inset:0;z-index:1200;background:#0c0c0ef5;padding:clamp(10px,2vw,28px);display:flex;flex-direction:column;gap:12px;color:white}
-#leaderboard h2{margin:0;font-size:clamp(24px,4vw,42px);color:#ffe08a}
-#leaderboard .leaderTop{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-#leaderboard .leaderScroll{overflow:auto;flex:1;min-height:0;border:1px solid #555;border-radius:12px}
-#leaderboard table{border-collapse:separate;border-spacing:0;width:100%;min-width:1650px;font-variant-numeric:tabular-nums}
-#leaderboard th,#leaderboard td{padding:12px 9px;text-align:center;border-bottom:1px solid #494949;white-space:nowrap}
-#leaderboard th{position:sticky;top:0;background:#333;z-index:2;font-size:13px}
-#leaderboard th:first-child,#leaderboard td:first-child{position:sticky;left:0;background:#292929;z-index:3}
-#leaderboard th:nth-child(2),#leaderboard td:nth-child(2){position:sticky;left:75px;background:#292929;z-index:3;text-align:left;min-width:170px}
-#leaderboard tbody tr:first-child td{background-color:#58471f}
-#leaderboard td{font-weight:700}
-#leaderboard .leaderClose{background:#444;color:#fff}#leaderReopen{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:100;background:#665020;color:#fff;border:2px solid #f5ce68;box-shadow:0 4px 18px #0009}body.hostMode #leaderReopen{bottom:85px}
-
-/* Host navigation, overview, and prominent movement notices */
-body.hostMode .boardZoomControls{display:flex;gap:5px;flex:0 0 auto;align-items:center}
+/* ---------- player chips ---------- */
+.playerBoardHeader{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.playerBoardHeader h2{margin:0;font-size:18px}
+.playerBoardHeader h2 small{font-size:.75em;font-weight:600}
+.boardZoomControls{display:flex;gap:5px;align-items:center}
 body:not(.hostMode) .boardZoomControls{display:none}
-body.hostMode .boardZoomControls button{padding:5px 9px;font-size:12px;white-space:nowrap}
-body.hostMode #players .player[data-focus-player]{cursor:pointer;transition:background .15s,box-shadow .15s}
-body.hostMode #players .player[data-focus-player]:hover,body.hostMode #players .player[data-focus-player]:focus-visible{background:#57516b;box-shadow:0 0 0 2px #f7d574;outline:none}
-body.hostMode #board.board.boardOverview{gap:0!important;padding:5px 0!important;scroll-behavior:auto;overflow-x:hidden!important;justify-content:flex-start}
-body.hostMode #board.board.boardOverview .space{flex:1 1 0!important;min-width:0!important;width:0!important;height:clamp(28px,7dvh,65px)!important;padding:1px!important;border-width:1px!important;border-radius:1px!important;overflow:visible}
-body.hostMode #board.board.boardOverview .spaceNum{font-size:clamp(5px,.55vw,10px)!important;line-height:1}
-body.hostMode #board.board.boardOverview .spaceName,body.hostMode #board.board.boardOverview .spaceSymbol,body.hostMode #board.board.boardOverview .startArrow{font-size:clamp(5px,.65vw,11px)!important;letter-spacing:0!important}
-body.hostMode #board.board.boardOverview .tokens{display:flex;flex-direction:column;gap:0;overflow:visible;position:relative;z-index:1}
-body.hostMode #board.board.boardOverview .tokens .topToken{font-size:clamp(7px,1vw,13px)!important}
-body.hostMode #landed:not(.hidden){font-size:clamp(18px,2.3vw,29px)!important;font-weight:900!important;padding:10px 16px!important;background:#433415!important;border:2px solid #e8c66e!important;border-radius:12px!important;box-shadow:0 4px 18px #0009!important;text-align:center}
-body.hostMode #piggyNotice:not(.hidden){font-size:clamp(17px,2vw,25px)!important;font-weight:850!important;padding:9px 14px!important;border-radius:10px!important;box-shadow:0 3px 15px #0008!important;text-align:center}
-body.hostMode #rollInfo{font-size:clamp(20px,2.8vw,34px)!important;font-weight:900!important;color:#ffe18d;text-shadow:0 2px 5px #000}
-#leaderboard th{font-size:clamp(19px,2vw,26px);padding:10px 8px;cursor:help;position:sticky}
+.boardStatus{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.player{display:inline-flex;align-items:center;gap:6px;padding:5px 9px 5px 6px;background:#2f2f34;border:1px solid #4e4e56;border-radius:999px;font-size:14px;font-weight:700;white-space:nowrap;transition:background .15s,box-shadow .15s,transform .15s}
+.player .token{font-size:17px;width:20px;height:20px}
+.player.isMe{border-color:var(--gold);box-shadow:0 0 0 1px #ffd87355}
+.player .pName{max-width:13ch;overflow:hidden;text-overflow:ellipsis}
+.player .pPos{font-variant-numeric:tabular-nums;background:#0006;border-radius:999px;padding:1px 8px;color:var(--gold);font-weight:900}
+.player .pPos small{color:var(--muted);font-weight:700}
+.player .conn{width:8px;height:8px;border-radius:50%;background:#6c6c74;flex:0 0 auto}
+.player .conn.on{background:#3fd27f;box-shadow:0 0 6px #3fd27f}
+.player button.danger{padding:3px 9px;font-size:12px;border-radius:999px;margin-left:2px}
+
+/* ---------- banners ---------- */
+.landedBanner{font-size:clamp(16px,2vw,24px);font-weight:900;text-align:center;background:linear-gradient(#3d3218,#2c2412);border:2px solid var(--gold);color:#fff;border-radius:999px;padding:10px 22px;margin:10px auto;box-shadow:0 6px 24px #000a,0 0 22px #e9b23f40;animation:bannerIn .45s var(--ease-out) both}
+.piggyNotice{background:linear-gradient(#c43a8c,#9c2370);color:#fff;border:2px solid #ff9dd5;border-radius:999px;text-align:center;font-weight:900;font-size:clamp(15px,1.8vw,22px);padding:9px 20px;margin:6px auto;box-shadow:0 6px 22px #000a,0 0 20px #fa4db855;animation:bannerIn .45s .12s var(--ease-out) both}
+.notice{color:#ffd56d;font-weight:700}
+.notice:empty{display:none}
+
+/* =====================================================================
+   BOARD
+   --cell drives every measurement inside a space. app.js sets it from
+   the board's measured size (ResizeObserver), so spaces fill the space
+   available on any screen.
+   ===================================================================== */
+.board{position:relative;display:flex;align-items:center;gap:clamp(6px,.9vh,12px);overflow-x:auto;overflow-y:hidden;padding:10px 12px;height:clamp(150px,26vh,260px);
+  --cell:150px;
+  scrollbar-width:thin;scrollbar-color:#55555d transparent;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+.board::-webkit-scrollbar{height:8px}.board::-webkit-scrollbar-thumb{background:#4a4a52;border-radius:8px}
+.space{position:relative;flex:0 0 var(--cell);width:var(--cell);height:var(--cell);
+  border:calc(var(--cell)*.022 + 1.5px) solid #ffffffb8;border-radius:calc(var(--cell)*.1);padding:calc(var(--cell)*.06);
+  color:#141414;text-align:center;font-weight:900;display:flex;flex-direction:column;
+  box-shadow:inset 0 calc(var(--cell)*.035) 0 #ffffff38,inset 0 calc(var(--cell)*-.04) 0 #00000026,0 calc(var(--cell)*.03) calc(var(--cell)*.07) #000a;
+  transition:transform .3s var(--ease-out),box-shadow .3s}
+.space .spaceNum{position:absolute;top:calc(var(--cell)*.05);left:calc(var(--cell)*.05);z-index:1;font-size:calc(var(--cell)*.095 + 2px);line-height:1;font-weight:900;padding:calc(var(--cell)*.018) calc(var(--cell)*.04);border-radius:calc(var(--cell)*.045);background:#00000030;color:inherit;font-variant-numeric:tabular-nums}
+.space .spaceName{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:calc(var(--cell)*.02);font-size:calc(var(--cell)*.125);font-weight:950;line-height:1.05;letter-spacing:-.01em;padding-bottom:calc(var(--cell)*.12)}
+.spaceSymbol{font-size:calc(var(--cell)*.34);line-height:1;filter:drop-shadow(0 2px 2px #0005)}
+.startArrow{font-size:calc(var(--cell)*.24);line-height:1}
+.space[data-type="Start"]{background:linear-gradient(160deg,#a2a2a8,#76767c)!important;color:#111!important}
+.space[data-type="Start"] .spaceName{padding-bottom:calc(var(--cell)*.14)}
+.space[data-type="Hint"]{background:#50c878!important;color:#102a18!important}
+.space[data-type="Add 2"] .spaceSymbol,.space[data-type="Add 3"] .spaceSymbol{font-weight:950;letter-spacing:-.04em;text-shadow:0 2px 0 #0003;filter:none}
+.space[data-type="Goal"]{border-color:#fff;background-size:calc(var(--cell)*.25) calc(var(--cell)*.25)!important;box-shadow:0 0 calc(var(--cell)*.12) #ffffff70,0 calc(var(--cell)*.03) calc(var(--cell)*.07) #000a}
+.space[data-type="Goal"] .spaceName{color:#fff!important;font-size:calc(var(--cell)*.2);letter-spacing:.06em;text-shadow:0 2px 0 #000,0 0 6px #000,0 0 14px #000}
+.secretSymbol{filter:drop-shadow(0 0 calc(var(--cell)*.05) #fff) drop-shadow(0 2px 2px #0006);animation:secretGlow 2.6s ease-in-out infinite}
+/* Double: static gold; only cheap transform/opacity sparkles animate. */
+.space[data-type="Double"]{background:linear-gradient(135deg,#fff4ad 0%,#f8d24c 22%,#a86a09 50%,#ffe882 76%,#b8780b 100%)!important;border-color:#ffed8a;box-shadow:0 0 calc(var(--cell)*.13) #ffcc4080,inset 0 0 calc(var(--cell)*.07) #fff6a7,0 calc(var(--cell)*.03) calc(var(--cell)*.07) #000a}
+.space[data-type="Double"] .spaceSymbol{font-weight:950;text-shadow:0 2px 3px #fff8;filter:none}
+.space[data-type="Double"]::after,.space[data-type="Double"]::before{position:absolute;color:#fff;pointer-events:none;will-change:transform,opacity}
+.space[data-type="Double"]::after{content:'✦';right:9%;top:6%;font-size:calc(var(--cell)*.13);text-shadow:0 0 8px #fff,0 0 13px #ffe45e;animation:twinkle 1.6s ease-in-out infinite alternate}
+.space[data-type="Double"]::before{content:'✧';left:17%;bottom:16%;font-size:calc(var(--cell)*.11);text-shadow:0 0 10px #fff;animation:twinkle 2.2s .6s ease-in-out infinite alternate}
+
+/* tokens sit in a strip along the bottom of each space */
+.space .tokens{position:absolute;left:calc(var(--cell)*.04);right:calc(var(--cell)*.04);bottom:calc(var(--cell)*.045);z-index:2;display:flex;flex-wrap:wrap-reverse;justify-content:center;align-items:center;gap:0 calc(var(--cell)*.01)}
+.token{display:inline-flex;align-items:center;justify-content:center;width:27px;height:27px;font-size:19px;line-height:1;-webkit-text-stroke:.6px #1a1a1a;filter:drop-shadow(0 1px 1px #000) drop-shadow(0 0 2px #0009)}
+.space .token{width:calc(var(--cell)*.19);height:calc(var(--cell)*.19);font-size:calc(var(--cell)*.18)}
+.space .tokens:has(.token:nth-child(6)) .token{width:calc(var(--cell)*.165);height:calc(var(--cell)*.165);font-size:calc(var(--cell)*.15)}
+
+/* landing / movement */
+.space.landing{z-index:3;outline:calc(var(--cell)*.03 + 2px) solid #fff2a0;outline-offset:3px;box-shadow:0 0 calc(var(--cell)*.18) #ffdb66,0 0 calc(var(--cell)*.36) #ffd85e66;animation:landingPop .55s var(--ease-out)}
+.moveGhost{position:absolute;left:0;top:0;z-index:8;pointer-events:none;will-change:transform;transform:translate(-9999px,0)}
+.moveGhost .token{width:calc(var(--cell)*.3);height:calc(var(--cell)*.3);font-size:calc(var(--cell)*.27);-webkit-text-stroke:1px #111;filter:drop-shadow(0 4px 4px #000c) drop-shadow(0 0 6px #fff9)}
+.moveGhost.rider .token{width:calc(var(--cell)*.24);height:calc(var(--cell)*.24);font-size:calc(var(--cell)*.21)}
+.swapFlash{animation:swapFlash .7s ease-in-out 3;z-index:4}
+
+/* host overview: whole board laid out as a serpentine grid */
+.board.boardOverview{display:grid;grid-template-columns:repeat(var(--ov-cols,13),var(--cell));grid-auto-rows:var(--cell);gap:6px;justify-content:center;align-content:center;overflow:hidden}
+.board.boardOverview .space{width:var(--cell);height:var(--cell)}
+body.hostMode #board.board.boardOverview{padding:66px 8px 8px}
+
+/* ---------- question / answer ---------- */
+.question{font-size:clamp(21px,3vw,40px);font-weight:850;line-height:1.25;overflow-wrap:anywhere;text-wrap:balance}
+#qid{font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.questionImage{display:block;max-width:100%;max-height:420px;object-fit:contain;margin:16px auto 6px;border-radius:12px;border:1px solid #555;background:#141416;box-shadow:0 8px 24px #0008}
+.answer{background:linear-gradient(#1c6b4b,#14553a);border:1px solid #3fae7c;padding:14px 18px;border-radius:12px;font-size:clamp(26px,3.5vw,46px);font-weight:950;line-height:1.2;text-align:center;overflow-wrap:anywhere;box-shadow:0 8px 26px #0009,inset 0 1px 0 #ffffff26}
+#answer:not(.hidden){margin-top:16px;animation:revealIn .5s var(--ease-out) both}
+.revealHint{font-size:clamp(15px,2.2dvh,23px);color:#bce4c2;text-align:center;padding:8px;white-space:pre-wrap;animation:fadeIn .5s .2s both}
+#clock{font-size:22px;font-weight:900;font-variant-numeric:tabular-nums}
+#clock:empty{display:none}
+#queue p{display:flex;align-items:center;gap:8px;margin:0 0 6px;padding:8px 12px;border-radius:10px;background:#2b2b30;border:1px solid #44444b;font-weight:700;animation:slideIn .3s var(--ease-out) both}
+#queue p .token{font-size:20px}
+.buzzTime{font-size:13px;color:#ffdf91;margin-left:auto;font-variant-numeric:tabular-nums}
+.strike{text-decoration:line-through;opacity:.5}
+#queue p.active{border-color:var(--gold);background:linear-gradient(90deg,#5c4c29,#2b2b30);box-shadow:0 0 16px #e9b23f40}
+.queuePanel h3{margin:0 0 10px}
+
+/* ---------- dice ---------- */
+#rollWrap{text-align:center}
+.die{display:inline-block;font-size:100px;line-height:1;filter:drop-shadow(0 0 16px #fff5)}
+.die.rolling{animation:diceShake .13s linear infinite}
+.die.dieLanded{animation:diePop .4s var(--ease-out)}
+#rollInfo{font-size:clamp(18px,2.6vw,32px);font-weight:900;color:#ffe18d;text-shadow:0 2px 5px #000;animation:fadeIn .3s both}
+
+/* ---------- choices ---------- */
+#choiceTitle{margin:0 0 12px}
+.targetChoice{display:inline-flex;align-items:center;gap:9px;padding:12px 16px}
+.selectedTarget{outline:3px solid #67e9a4;outline-offset:2px}
+.swapConfirm{width:100%;padding:14px;border:2px solid #67e9a4;border-radius:12px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;font-weight:800;background:#16382699;animation:fadeIn .25s both}
+.swapConfirm button{background:linear-gradient(#2fb36e,#20894f);color:#fff;border-color:#67e9a4}
+
+/* ---------- player action tray ---------- */
+.abilityTray{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.abilityTray:empty{display:none}
+.abilityIcon{width:46px;height:46px;display:inline-flex;align-items:center;justify-content:center;border-radius:11px;border:2px solid #bbb;background:#303033;color:#fff;font-size:26px;font-weight:950;box-shadow:0 3px 10px #0008;animation:popIn .35s var(--ease-out) both}
+.abilityAdd3,.abilityAdd2,.abilityDouble{font-size:22px}
+.abilityHint{background:#168d49}.abilityLockedOut{background:#a72b36}.abilityDouble{background:#d6a92b;color:#111}.abilityPiggyBack{background:#ac6983}
+.hintAction{display:flex;align-items:center;justify-content:center}
+.hintAction:empty{min-height:0}
+.hintAction button{background:linear-gradient(#3f9c61,#2c7a4a);color:#fff;border-color:#6fd394;padding:7px 24px;animation:popIn .3s var(--ease-out) both}
+.buzzerLocked{background:linear-gradient(#cf3348,#a6212f)!important;color:#fff!important;opacity:1!important;border-color:#ee6676!important}
+.buzzerReady{background:linear-gradient(#22b062,#16874a)!important;color:#fff!important;opacity:1!important;border-color:#5fe39a!important;box-shadow:0 5px 0 #0b4f2a,0 0 28px #2ad37a66!important}
+#buzzButton{transition:background .15s,box-shadow .15s,transform .08s}
+#buzzButton.buzzerReady:active{transform:translateY(4px);box-shadow:0 1px 0 #0b4f2a,0 0 18px #2ad37a55!important}
+#privateHint:not(.hidden){margin-top:8px;font-size:clamp(17px,2.4vh,24px);animation:revealIn .4s both}
+
+/* ---------- host controls ---------- */
+.controls{position:sticky;bottom:0;z-index:4;display:flex;gap:9px;flex-wrap:wrap;align-items:center;padding:10px 12px;background:linear-gradient(#141416,#0e0e10);border-top:1px solid #4a4a52;box-shadow:0 -6px 22px #0009}
+.controls button{min-height:46px;font-size:16px;padding:10px 20px}
+
+/* ---------- winner / overlays ---------- */
+.winner{font-size:46px;text-align:center;color:#ffe080;font-weight:950}
+#winner:not(.hidden){position:fixed;inset:0;z-index:1100;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px max(18px,env(safe-area-inset-right)) 24px max(18px,env(safe-area-inset-left));background:radial-gradient(ellipse at center,#000000d0 0%,#000000ee 70%);font-size:clamp(30px,6vw,76px);line-height:1.15;color:#ffe28a;text-shadow:0 3px 5px #000,0 0 40px #e7b44c;overflow-wrap:anywhere;pointer-events:none;animation:victoryPop .6s var(--ease-out) both}
+.confettiPiece{position:fixed;top:-30px;pointer-events:none;z-index:1150;will-change:transform,opacity;animation:confettiFall var(--duration) linear forwards}
+
+.swapAnnouncement{position:fixed;left:50%;top:22%;transform:translateX(-50%);z-index:100;background:#151517f2;border:3px solid #f4d579;color:#fff;padding:22px 36px;border-radius:18px;font-size:clamp(21px,3vw,40px);font-weight:950;text-align:center;box-shadow:0 0 70px #f7ce5b88,0 16px 50px #000c;animation:popDown .4s var(--ease-out) both;pointer-events:none}
+.piggySelectionPopup{position:fixed;top:18%;left:50%;transform:translateX(-50%);z-index:9999;max-width:min(90vw,650px);padding:22px 32px;border:3px solid #ffcc70;border-radius:18px;background:linear-gradient(#45294f,#2d1b35);color:#fff3d2;text-align:center;font-size:clamp(22px,3.5vw,38px);font-weight:900;box-shadow:0 12px 45px #000b;pointer-events:none;animation:popDown .35s var(--ease-out) both}
+.questionStatusNotice{position:fixed;z-index:850;left:50%;top:19%;transform:translateX(-50%);width:min(92vw,540px);padding:16px 22px;border-radius:16px;text-align:center;font-size:clamp(18px,5vw,28px);font-weight:950;letter-spacing:.025em;box-shadow:0 10px 34px #000b;pointer-events:none;animation:popDown .35s var(--ease-out) both}
+.questionStatusNotice.locked{background:#991f2e;color:#fff;border:3px solid #ff6878}
+.questionStatusNotice.solo{background:#58298d;color:#fff;border:3px solid #b887ff}
+.questionStatusNotice.head{background:#16683e;color:#edfff3;border:3px solid #79ef9c}
+.hintUsedPopup{position:fixed;z-index:900;top:16%;left:50%;transform:translateX(-50%);width:min(88vw,510px);background:#b4eeb6;color:#124f29;border:3px solid #4dba6b;border-radius:16px;padding:20px 26px;font-weight:950;font-size:clamp(20px,3vw,29px);text-align:center;box-shadow:0 10px 35px #000a;pointer-events:none;animation:popDown .35s var(--ease-out) both}
+.secretFoundPopup{position:fixed;top:22%;left:50%;transform:translateX(-50%);z-index:1100;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;width:min(92vw,650px);padding:32px 22px;border:5px solid #ffe58b;border-radius:24px;background:linear-gradient(145deg,#245a36,#102e1c);color:#fff;box-shadow:0 0 0 7px #0008,0 16px 70px #000e,0 0 38px #ffdf6c99;pointer-events:none;animation:secretPop .45s var(--ease-out) both}
+.secretFoundPopup strong{font-size:clamp(25px,5vw,48px);line-height:1.15;text-shadow:0 3px 8px #000}
+.secretFoundPopup>span:last-child{font-size:clamp(25px,4.5vw,43px);font-weight:1000;color:#ffe47a}
+.secretFoundIcon{font-size:clamp(38px,7vw,70px);animation:wiggle .6s .3s ease-in-out 2}
+/* every popup fades out instead of vanishing */
+.leaving{animation:popOut .26s ease-in forwards!important}
+
+/* ---------- leaderboard ---------- */
+#leaderboard{position:fixed;inset:0;z-index:1200;background:#0b0b0d;padding:clamp(10px,2vw,28px);display:flex;flex-direction:column;gap:12px;color:#fff;animation:fadeIn .35s both}
+#leaderboard h2{margin:0;font-size:clamp(24px,4vw,42px);color:#ffe08a;text-shadow:0 0 24px #e9b23f55}
+#leaderboard .leaderTop{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+#leaderboard .leaderScroll{overflow:auto;flex:1;min-height:0;border:1px solid #555;border-radius:14px;box-shadow:0 10px 40px #000a}
+#leaderboard table{border-collapse:separate;border-spacing:0;width:100%;min-width:1530px;font-variant-numeric:tabular-nums}
+#leaderboard th,#leaderboard td{padding:12px 9px;text-align:center;border-bottom:1px solid #444;white-space:nowrap}
+#leaderboard th{position:sticky;top:0;z-index:2;background:#333;font-size:clamp(19px,2vw,26px);padding:10px 8px;cursor:help}
+#leaderboard td{font-weight:700}
+#leaderboard tbody tr{animation:slideIn .4s var(--ease-out) both}
+#leaderboard tbody tr:nth-child(2){animation-delay:.05s}#leaderboard tbody tr:nth-child(3){animation-delay:.1s}#leaderboard tbody tr:nth-child(4){animation-delay:.15s}#leaderboard tbody tr:nth-child(n+5){animation-delay:.2s}
+#leaderboard tbody tr:nth-child(odd) td{background-color:#ffffff06}
+#leaderboard th:first-child,#leaderboard td:first-child{position:sticky;left:0;background:#292929;z-index:3}
+#leaderboard th:nth-child(2),#leaderboard td:nth-child(2){position:sticky;left:75px;background:#292929;z-index:3;text-align:center;min-width:112px;width:112px;max-width:112px;padding-left:4px;padding-right:4px;overflow:hidden;text-overflow:ellipsis}
+#leaderboard th:first-child{z-index:4}#leaderboard th:nth-child(2){z-index:4}
+#leaderboard tbody tr:first-child td{background-color:#58471f}
+#leaderboard th:nth-child(3),#leaderboard td:nth-child(3){min-width:49px}
+#leaderboard td:nth-child(2) .token{vertical-align:middle}
 #leaderboard th .leaderIcon{display:inline-block;min-width:24px}
 #leaderboard th .leaderTooltip{display:none;position:absolute;top:calc(100% - 1px);left:50%;transform:translateX(-50%);z-index:15;background:#f4d37a;color:#171717;border:1px solid #b88a27;border-radius:6px;padding:7px 10px;box-shadow:0 4px 12px #0009;font-size:13px;font-weight:800;white-space:nowrap;pointer-events:none}
 #leaderboard th:hover .leaderTooltip,#leaderboard th:focus .leaderTooltip,#leaderboard th:focus-within .leaderTooltip{display:block}
 #leaderboard th:focus{outline:2px solid #ffe08a;outline-offset:-2px}
-/* Compact, centered player column for narrow portrait screens. */
-#leaderboard th:nth-child(2),#leaderboard td:nth-child(2){text-align:center!important;min-width:112px!important;width:112px!important;max-width:112px!important;padding-left:4px!important;padding-right:4px!important;overflow:hidden;text-overflow:ellipsis}
-#leaderboard td:nth-child(2) .token{vertical-align:middle}
-#leaderboard th:nth-child(3),#leaderboard td:nth-child(3){min-width:49px}
-#leaderboard table{min-width:1530px}
-/* Larger, high-contrast board pieces on the host's regular zoom view. */
-body.hostMode #board.board:not(.boardOverview) .space .token{width:33px!important;height:33px!important;font-size:29px!important;line-height:1!important;-webkit-text-stroke:1px #161616;filter:drop-shadow(0 1px 2px #000) drop-shadow(0 0 3px #fff8)}
-body.hostMode #board.board:not(.boardOverview) .space .tokens{gap:2px;min-height:34px;align-items:center}
-body.hostMode #board.board:not(.boardOverview) .space{overflow:visible}
+#leaderboard .leaderClose{background:#444;color:#fff}
+#leaderReopen{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:100;background:linear-gradient(#7a6125,#5a4519);color:#fff;border:2px solid #f5ce68;box-shadow:0 4px 18px #0009;animation:popIn .35s both}
 
-.piggySelectionPopup{position:fixed;top:18%;left:50%;transform:translateX(-50%);z-index:9999;max-width:min(90vw,650px);padding:24px 32px;border:3px solid #ffcc70;border-radius:18px;background:#34213d;color:#fff3d2;text-align:center;font-size:clamp(23px,3.5vw,38px);font-weight:900;box-shadow:0 12px 45px #000b;pointer-events:none;animation:piggyPop .25s ease-out}
-@keyframes piggyPop{from{opacity:0;transform:translate(-50%,-18px) scale(.9)}to{opacity:1;transform:translate(-50%,0) scale(1)}}
+/* =====================================================================
+   HOST SCREEN — fills the display; only inner panels scroll
+   ===================================================================== */
+body.hostMode{height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden}
+body.hostMode main{flex:1 1 auto;min-height:0;width:100%;max-width:none;display:flex;flex-direction:column;padding:8px 14px 0}
+body.hostMode #game{flex:1 1 auto;min-height:0;min-width:0;display:flex;flex-direction:column;gap:8px}
+body.hostMode .panel{margin:0;padding:10px 14px}
+body.hostMode #error{flex:0 0 auto;font-size:13px}
+/* host tools live in the header bar on wide screens */
+@media (min-width:1000px){
+  body.hostMode #setupToggleWrap{position:fixed;top:9px;right:110px;z-index:20;margin:0;flex-wrap:nowrap}
+  body.hostMode #setupToggleWrap button{padding:6px 12px;font-size:12px}
+}
+body.hostMode #setupPanel{flex:0 0 auto;max-height:30dvh;overflow-y:auto}
+body:not([data-phase="lobby"]):not([data-phase="exhausted"]).hostMode #setupPanel{padding:6px 14px}
+body:not([data-phase="lobby"]):not([data-phase="exhausted"]).hostMode .roomCodeBig{font-size:clamp(18px,2.2vw,26px)}
+body.hostMode[data-phase="lobby"] #setupPanel{text-align:center;padding:18px}
+body.hostMode[data-phase="lobby"] .roomSection{justify-content:center;flex-direction:column}
+body.hostMode[data-phase="lobby"] .roomCodeBig{font-size:clamp(40px,7vw,92px)}
+body.hostMode #boardWrap{position:relative;flex:1 1 auto;min-height:0;min-width:0;display:flex;flex-direction:column}
+body.hostMode .playerBoardHeader{flex:0 0 auto;min-width:0}
+body.hostMode .playerBoardHeader h2{font-size:clamp(15px,1.4vw,19px)}
+body.hostMode .boardZoomControls button{padding:5px 11px;font-size:12px;white-space:nowrap}
+body.hostMode .boardStatus{max-height:76px;overflow-y:auto;justify-content:flex-end}
+body.hostMode .boardStatus .player{font-size:clamp(12px,.95vw,15px)}
+body.hostMode #players .player[data-focus-player]{cursor:pointer}
+@media (hover:hover){body.hostMode #players .player[data-focus-player]:hover{background:#4a4658;box-shadow:0 0 0 2px #f7d574;transform:translateY(-1px)}}
+body.hostMode #players .player[data-focus-player]:focus-visible{background:#4a4658;box-shadow:0 0 0 2px #f7d574;outline:none}
+/* landing / piggy banners float over the board so the spaces never jump */
+body.hostMode #landed,body.hostMode #piggyNotice{position:absolute;left:50%;transform:translateX(-50%);z-index:9;width:max-content;max-width:calc(100% - 40px);margin:0;pointer-events:none}
+body.hostMode #landed{top:56px;font-size:clamp(18px,2.2vw,30px);padding:10px 26px}
+body.hostMode #piggyNotice{top:118px}
+body.hostMode #board.board{flex:1 1 0;height:auto;min-height:90px}
+body.hostMode[data-phase="question"] #boardWrap,body.hostMode[data-phase="reveal"] #boardWrap{flex:0 0 auto}
+body.hostMode[data-phase="question"] #board.board,body.hostMode[data-phase="reveal"] #board.board{flex:0 0 auto;height:clamp(104px,18dvh,200px)}
+body.hostMode #questionWrap{flex:1 1 auto;min-height:0;display:grid;grid-template-columns:minmax(0,7fr) minmax(250px,3fr);gap:8px}
+body.hostMode #questionWrap>.panel{min-height:0;min-width:0;overflow-y:auto;overscroll-behavior:contain}
+body.hostMode #questionWrap>.panel:first-child{position:relative;display:flex;flex-direction:column;justify-content:center;text-align:center;padding:clamp(14px,2.4vh,30px) clamp(16px,2.5vw,46px)}
+body.hostMode #questionWrap>.panel:first-child>*{flex:0 0 auto}
+body.hostMode #qid{position:absolute;top:12px;left:16px}
+body.hostMode #clock{position:absolute;top:8px;right:14px;padding:4px 14px;border-radius:999px;background:#0008;border:1px solid #555;color:var(--gold)}
+body.hostMode .question{font-size:clamp(24px,calc(2.6dvh + 1.3vw),62px)}
+body.hostMode .questionImage{max-height:clamp(110px,30dvh,420px)}
+body.hostMode .answer{font-size:clamp(26px,calc(3dvh + 1.2vw),66px)}
+body.hostMode .revealHint{font-size:clamp(16px,2.4dvh,28px)}
+body.hostMode #questionWrap>.panel:last-child{font-size:clamp(14px,1.8dvh,20px)}
+body.hostMode #questionWrap>.panel:last-child h3{margin:2px 0 10px;font-size:1.1em;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+body.hostMode #queue p{font-size:clamp(15px,2dvh,22px)}
+body.hostMode #rollWrap{flex:0 0 auto;display:flex;align-items:center;justify-content:center;gap:clamp(16px,3vw,44px);padding:8px 18px;max-height:24dvh}
+body.hostMode #rollWrap .die{font-size:clamp(54px,10dvh,118px)}
+body.hostMode #rollInfo{font-size:clamp(22px,3.4dvh,42px);text-align:left!important}
+body.hostMode #choiceWrap{flex:0 0 auto;max-height:22dvh;overflow-y:auto;text-align:center}
+body.hostMode #choiceWrap #targets{justify-content:center;font-size:clamp(18px,2.4dvh,26px);font-weight:800;color:var(--muted)}
+body.hostMode #notice{flex:0 0 auto;font-size:13px;padding:0 4px}
+body.hostMode #hostControls{flex:0 0 auto;position:relative;margin:0 -14px;padding:10px 14px max(10px,env(safe-area-inset-bottom));justify-content:center}
+body.hostMode #hostControls:empty{display:none}
+body.hostMode #game:has(#hostControls:empty){padding-bottom:10px}
+body.hostMode #leaderReopen{bottom:84px}
+@media (max-height:700px){
+  body.hostMode header{min-height:44px;padding:6px 14px}
+  @media (min-width:1000px){body.hostMode #setupToggleWrap{top:6px}}
+  body.hostMode .controls button{min-height:40px;padding:8px 16px;font-size:14px}
+  body.hostMode #landed{top:50px}
+}
 
-.questionStatusNotice{position:fixed;z-index:850;left:50%;top:19%;transform:translateX(-50%);width:min(92vw,540px);padding:17px 22px;border-radius:15px;text-align:center;font-size:clamp(18px,5vw,28px);font-weight:950;letter-spacing:.025em;box-shadow:0 8px 32px #000b;pointer-events:none}
-.questionStatusNotice.locked{background:#991f2e;color:white;border:3px solid #ff6878}
-.questionStatusNotice.solo{background:#58298d;color:white;border:3px solid #b887ff}
-.questionStatusNotice.head{background:#16683e;color:#edfff3;border:3px solid #79ef9c}
-.hintUsedPopup{position:fixed;z-index:900;top:16%;left:50%;transform:translateX(-50%);width:min(88vw,510px);background:#b4eeb6;color:#124f29;border:3px solid #4dba6b;border-radius:15px;padding:20px 26px;font-weight:950;font-size:clamp(20px,3vw,29px);text-align:center;box-shadow:0 10px 35px #000a}
+/* =====================================================================
+   PLAYER SCREEN — everything fits the device viewport, buzzer pinned
+   ===================================================================== */
+body.playerMode{height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden}
+body.playerMode header{flex:0 0 auto;padding:7px 12px;min-height:44px}
+body.playerMode header h1{font-size:clamp(15px,3.6vw,21px)}
+body.playerMode main{flex:1 1 auto;min-height:0;min-width:0;width:100%;display:flex;flex-direction:column;padding:6px 8px max(6px,env(safe-area-inset-bottom));overflow:hidden}
+body.playerMode #error{flex:0 0 auto;font-size:12px}
+body.playerMode #game{flex:1 1 auto;min-height:0;min-width:0;display:flex;flex-direction:column;gap:6px;overflow:hidden}
+body.playerMode .panel{margin:0;padding:8px;border-radius:12px}
+body.playerMode #setupPanel{flex:0 0 auto;text-align:center}
+body.playerMode #boardWrap{flex:0 0 auto;min-width:0;padding:6px}
+body.playerMode .playerBoardHeader{flex-wrap:nowrap;gap:6px;min-width:0}
+body.playerMode .playerBoardHeader h2{font-size:13px;white-space:nowrap}
+body.playerMode .playerBoardHeader small{display:none}
+body.playerMode .boardStatus{flex:1 1 auto;min-width:0;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;justify-content:flex-start;padding:1px}
+body.playerMode .boardStatus::-webkit-scrollbar{display:none}
+body.playerMode .boardStatus .player{flex:0 0 auto;font-size:11px;padding:3px 7px 3px 4px;gap:4px}
+body.playerMode .boardStatus .player .token{font-size:13px;width:15px;height:15px}
+body.playerMode .player .pPos{padding:0 6px}
+body.playerMode .player .pPos small{display:none}
+body.playerMode #landed,body.playerMode #piggyNotice{font-size:13px;padding:5px 12px;margin:5px 0 0;max-width:100%}
+body.playerMode #board.board{height:clamp(84px,16dvh,160px);padding:6px 4px;margin-top:4px}
+body.playerMode #questionWrap{flex:1 1 0;min-height:0;min-width:0;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain}
+body.playerMode #questionWrap>.panel:first-child{flex:1 0 auto;min-width:0;display:flex;flex-direction:column;justify-content:center;text-align:center;padding:12px}
+body.playerMode #questionWrap>.panel:last-child{display:none}
+body.playerMode #qid{margin-bottom:6px}
+body.playerMode .question{font-size:clamp(17px,calc(1.9dvh + 1.6vw),30px)}
+body.playerMode .questionImage{max-height:min(26dvh,220px);margin:8px auto 4px}
+body.playerMode .answer{font-size:clamp(22px,4.2dvh,40px);padding:10px}
+body.playerMode #clock{margin-top:6px;font-size:18px;color:var(--gold)}
+body.playerMode #rollWrap,body.playerMode #choiceWrap{flex:1 1 0;min-height:0;min-width:0;overflow-y:auto;overflow-x:hidden}
+body.playerMode #rollWrap{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+body.playerMode .die{font-size:clamp(70px,16dvh,150px)}
+body.playerMode #rollInfo{font-size:clamp(18px,3dvh,28px)}
+body.playerMode #choiceWrap{text-align:center;flex:0 1 auto}
+body.playerMode #choiceWrap #targets{justify-content:center}
+body.playerMode #notice{flex:0 0 auto;font-size:13px;text-align:center}
+body.playerMode #playerActions:not(:has(button,.abilityIcon,#privateHint:not(.hidden))){display:none}
+body.playerMode #playerActions{flex:0 0 auto;width:100%;min-width:0;margin-top:auto;padding:8px;max-height:min(40dvh,260px);overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;gap:6px;box-shadow:0 -6px 20px #0009}
+body.playerMode #actions{display:flex;min-width:0;width:100%;gap:6px;flex-wrap:wrap;justify-content:center}
+body.playerMode #actions:empty{display:none}
+body.playerMode #actions button{flex:1 1 auto;min-width:0;max-width:100%;white-space:normal;overflow-wrap:anywhere;min-height:52px}
+body.playerMode #actions button.big{flex-basis:100%;min-height:clamp(64px,12dvh,104px);font-size:clamp(24px,5dvh,40px)}
+body.playerMode #buzzButton{display:block;flex:1 1 100%!important;width:100%;min-height:clamp(70px,14dvh,120px)!important;padding:8px;font-size:clamp(28px,6dvh,46px)!important;letter-spacing:.06em;border-radius:16px}
+body.playerMode .abilityTray{margin-top:0;gap:6px;justify-content:center}
+body.playerMode .abilityIcon{width:clamp(30px,5.4dvh,42px);height:clamp(30px,5.4dvh,42px);font-size:clamp(17px,3.2dvh,25px)}
+body.playerMode #privateHint{max-height:14dvh;overflow:auto;padding:6px}
+body.playerMode #leaderReopen{bottom:calc(12px + env(safe-area-inset-bottom))}
+@media (max-height:650px){
+  body.playerMode header{padding:4px 10px;min-height:36px}
+  body.playerMode #board.board{height:clamp(76px,17dvh,120px)}
+  body.playerMode #buzzButton{min-height:58px!important}
+}
+@media (max-width:380px){body.playerMode #playerActions{padding:5px}body.playerMode .playerBoardHeader h2{font-size:12px}}
 
-.revealHint{font-size:clamp(15px,2.2dvh,23px);color:#bce4c2;text-align:center;padding:8px;white-space:pre-wrap}
-.hintAction{min-height:42px;display:flex;align-items:center;justify-content:center}.hintAction button{background:#368653;color:white;padding:7px 24px}
-body.playerMode #playerActions{gap:3px}body.hostMode #questionWrap{max-height:52dvh}body.hostMode #boardWrap{min-height:85px}body.playerMode #boardWrap{min-height:75px}
-/* The revealed secret marker is permanently visible in every board view. */
-#board .space .spaceName{position:relative}
-.secretFoundPopup{position:fixed;top:22%;left:50%;transform:translateX(-50%);z-index:1100;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;width:min(92vw,650px);padding:32px 22px;border:5px solid #ffe58b;border-radius:24px;background:linear-gradient(145deg,#245a36,#102e1c);color:#fff;box-shadow:0 0 0 7px #0008,0 16px 70px #000e,0 0 38px #ffdf6c99;animation:secretPop .35s ease-out}
-.secretFoundPopup strong{font-size:clamp(25px,5vw,48px);line-height:1.15;text-shadow:0 3px 8px #000}
-.secretFoundPopup>span:last-child{font-size:clamp(25px,4.5vw,43px);font-weight:1000;color:#ffe47a}
-.secretFoundIcon{font-size:clamp(38px,7vw,70px)}
-@keyframes secretPop{from{transform:translateX(-50%) scale(.65);opacity:0}to{transform:translateX(-50%) scale(1);opacity:1}}
+/* ---------- keyframes (transform / opacity only where it loops) ---------- */
+@keyframes twinkle{from{opacity:.25;transform:scale(.7) rotate(-10deg)}to{opacity:1;transform:scale(1.35) rotate(15deg)}}
+@keyframes secretGlow{50%{transform:scale(1.08)}}
+@keyframes landingPop{0%{transform:scale(.9)}55%{transform:scale(1.07)}100%{transform:scale(1)}}
+@keyframes diceShake{0%{transform:rotate(-13deg) translateX(-4px)}50%{transform:rotate(15deg) translateX(4px)}100%{transform:rotate(-13deg) translateX(-4px)}}
+@keyframes diePop{0%{transform:scale(1.35)}60%{transform:scale(.94)}100%{transform:scale(1)}}
+@keyframes confettiFall{to{transform:translate(var(--drift),110vh) rotate(var(--spin));opacity:0}}
+@keyframes swapFlash{50%{transform:translateY(-10px) scale(1.06)}}
+@keyframes bannerIn{from{opacity:0;transform:translate(var(--bx,0),-12px) scale(.94)}to{opacity:1;transform:translate(var(--bx,0),0) scale(1)}}
+@keyframes popDown{from{opacity:0;transform:translate(-50%,-20px) scale(.92)}to{opacity:1;transform:translate(-50%,0) scale(1)}}
+@keyframes popOut{to{opacity:0;transform:translate(-50%,-10px) scale(.96)}}
+@keyframes secretPop{from{transform:translateX(-50%) scale(.6);opacity:0}70%{transform:translateX(-50%) scale(1.04);opacity:1}to{transform:translateX(-50%) scale(1)}}
+@keyframes wiggle{25%{transform:rotate(-10deg)}75%{transform:rotate(10deg)}}
+@keyframes victoryPop{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+@keyframes revealIn{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideIn{from{opacity:0;transform:translateX(-14px)}to{opacity:1;transform:none}}
+@keyframes popIn{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+body.hostMode #landed,body.hostMode #piggyNotice{--bx:-50%}
+
+@media (prefers-reduced-motion:reduce){
+  .space[data-type="Double"]::after,.space[data-type="Double"]::before,.secretSymbol{animation:none}
+  .die.rolling{animation-duration:.4s}
+}
 </style></head><body><header><h1>🎯 Quick Shot</h1><span id="identity"></span></header><main><div id="error"></div><section id="entry" class="panel"><h2>Choose how to play</h2><div class="row"><button id="hostOption" class="big">HOST</button><button id="playerOption" class="big alt">PLAYER</button></div><div id="hostEntry" class="hidden"><h3>Host a game</h3><button id="create">Create Host Lobby</button></div><div id="playerEntry" class="hidden"><h3>Join a game</h3><div class="row"><input id="code" placeholder="Lobby code" maxlength="5" autocapitalize="characters" autocomplete="off" spellcheck="false" style="text-transform:uppercase"><input id="name" placeholder="Player name" maxlength="12"><select id="color"></select><select id="shape"></select><button id="join">Join Lobby</button></div></div></section><section id="game" class="hidden"><div id="setupToggleWrap" class="setupToggle hidden"><button id="toggleRoom" class="alt">Hide Room & Question Set</button><button id="openAnswerMonitorTop" class="alt">OPEN ANSWER MONITOR</button><button id="openQuestionLog" class="alt">OPEN QUESTION LOG</button></div><div id="setupPanel" class="panel"><div class="roomSection"><strong id="room" class="roomCodeBig"></strong><span id="status" class="muted"></span></div><div id="hostSetup" class="hidden"><p>Upload an Excel file with row 1 as headers and columns A: ID, B: Question, C: Answer, D: Hint, E: Images (optional image URL).</p><input type="file" id="file" accept=".xlsx,.xls"><div id="uploadInfo" role="status" style="white-space:pre-wrap;margin-top:10px"></div></div></div><div id="boardWrap" class="panel"><div class="playerBoardHeader"><h2>Game Board <small class="muted">Scroll horizontally →</small></h2><div id="boardZoomControls" class="boardZoomControls"><button id="zoomOut" type="button" class="alt">− Zoom Out</button><button id="zoomIn" type="button" class="alt">+ Zoom In</button></div><div id="players" class="boardStatus"></div></div><div id="landed" class="landedBanner hidden"></div><div id="piggyNotice" class="piggyNotice hidden"></div><div id="board" class="board"></div></div><div id="questionWrap" class="overlay hidden"><div class="panel"><div class="muted" id="qid"></div><div class="question" id="question"></div><img id="questionImage" class="questionImage hidden" alt="Question image" referrerpolicy="no-referrer"><div id="answer" class="answer hidden"></div><div id="revealHint" class="revealHint hidden"></div><div id="clock"></div></div><div class="panel"><h3>Buzz queue</h3><div id="queue"></div></div></div><div id="rollWrap" class="panel hidden"><div class="die" id="die">🎲</div><div id="rollInfo" style="text-align:center"></div></div><div id="choiceWrap" class="panel hidden"><h3 id="choiceTitle"></h3><div id="targets" class="row"></div></div><div id="winner" class="winner hidden"></div><button id="leaderReopen" class="alt hidden" type="button">🏆 View Final Leaderboard</button><section id="leaderboard" class="hidden" aria-label="Final leaderboard"><div class="leaderTop"><h2>🏆 FINAL LEADERBOARD</h2><button id="leaderClose" class="leaderClose">Close</button></div><div class="leaderScroll"><table><thead id="leaderHead"></thead><tbody id="leaderBody"></tbody></table></div></section><div id="notice" class="notice"></div><div id="questionStatusNotice" class="questionStatusNotice hidden" role="status"></div><div id="playerActions" class="panel hidden"><div id="hintAction" class="hintAction"></div><div class="row" id="actions"></div><div id="abilityTray" class="abilityTray" aria-label="Active abilities"></div><div id="privateHint" class="answer hidden"></div></div><div id="hostControls" class="controls hidden"></div></section></main><script src="/socket.io/socket.io.js"></script><script src="/app.js"></script></body></html>
